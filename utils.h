@@ -1,14 +1,22 @@
 typedef int bool;
 typedef short word;
+typedef char byte;
 #define false 0;
 #define true 1;
 #define min(a,b) (a <= b ? a : b)
+#define isAHexValue(c) (((c >= 65) && (c <= 70)) || ((c >= 97) && (c <= 102)) ||((c >= 48) && (c <= 57)))
 
 /// @brief Check if the given string contains the given char.
 /// @param str 
 /// @param c 
 /// @return Return true if it does contain the char, otherwise return false.
 bool contains(char* str, char c);
+
+/// @brief Check if the given string starts with the given string.
+/// @param str 
+/// @param cmp 
+/// @return Return the position of the end of the given string, otherwise return false.
+bool startsWith(char* str, char* cmp);
 
 /// @brief Compare the given strings.
 /// @param str1 
@@ -22,12 +30,14 @@ bool compareStrings(char* str1, char* str2);
 /// @return Return the power of the given number.
 int pow(int base, int exp);
 
-/// @brief Convert a char to the corresponding hex value.
-/// @param c 
-/// @return Return the hex value.
-word charToHex(char c);
-
 /// @brief Convert the given string to the corresponding hex value.
 /// @param str 
+/// @param len
 /// @return Return the hex value.
-word strToHex(char* str);
+word strToHex(char* str, int len);
+
+/// @brief Convert the given string to the corresponding int value.
+/// @param str 
+/// @param len 
+/// @return Return the int value.
+word parseInt(char* str, int len);

@@ -12,9 +12,24 @@ bool contains(char* str, char c) {
     return false;
 }
 
+int startsWith(char* str, char* cmp) {
+    int index = 0;
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == cmp[index]) {
+            index++;
+            if ((index + 1) == strlen(cmp)) {
+                return i;
+            }
+            continue;
+        }
+        index = 0;
+    }
+    return false;
+}
+
 bool compareStrings(char* str1, char* str2) {
     int len = min(strlen(str1), strlen(str2));
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < len; i++) {
         if (str1[i] != str2[i]) {
             return false;
         }
@@ -34,11 +49,11 @@ int pow(int base, int exp) {
     return base;
 }
 
-word charToHex(char c) {
+static word charToHex(char c) {
     if ((c >= 65) && (c <= 70)) {
         return (word) (c - 55);
     } else if ((c >= 97) && (c <= 102)) {
-        return (word) (c - 55);
+        return (word) (c - 87);
     } else if ((c >= 48) && (c <= 57)) {
         return (word) (c - 48);
     } else {
@@ -46,14 +61,34 @@ word charToHex(char c) {
     }
 }
 
-word strToHex(char* str) {
-    word hex = 0x00;
-    int posExp = pow(16, strlen(str) - 1);
+static word charToInt(char c) {
+    if ((c >= 48) && (c <= 57)) {
+        return (word) (c - 48);
+    } else {
+        return 0;
+    }
+}
 
-    for (int i = 0; i < strlen(str); i++) {
+word strToHex(char* str, int len) {
+    word hex = 0x00;
+    int posExp = pow(16, len - 1);
+
+    for (int i = 0; i < len; i++) {
         hex += posExp * charToHex(str[i]);
         posExp /= 16;
     }
 
     return hex;
+}
+
+word parseInt(char* str, int len) {
+    word integer = 0x00;
+    int posExp = pow(10, len - 1);
+
+    for (int i = 0; i < len; i++) {
+        integer += posExp * charToHex(str[i]);
+        posExp /= 10;
+    }
+
+    return integer;
 }
