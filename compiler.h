@@ -1,3 +1,9 @@
+word ram[4096];
+word* lcTable;
+word lc;
+int lcIndex;
+int linesCount;
+
 /// @brief Compile the given file.
 /// @param filePath 
 /// @return Return the compilation result.

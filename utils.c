@@ -3,6 +3,24 @@
 #include <string.h>
 #include "utils.h"
 
+bool compareLabels(int label, char* str) {
+    for (int i = 0; i < 4; i++) {
+        if (str[i] != ((label >> (24 - (i * 8))) && (0b11111111))) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void formatLabel(char* str, int len) {
+    str[len] = ',';
+    for (int i = len + 1; len < 4; i++) {
+        str[i] = ' ';
+    }
+    return;
+}
+
+
 bool contains(char* str, char c) {
     for (int i = 0; (str[i] != '\0'); i++) {
         if (str[i] == c) {

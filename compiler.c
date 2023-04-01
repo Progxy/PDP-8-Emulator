@@ -2,64 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "utils.h"
+#include "compiler.h"
+#include "isa.h"
 
-static word ram[4096];
-static word* lcTable;
-static word lc = 0x00;
-static int lcIndex = 0;
-static int linesCount = 0;
-
-/// @brief Check if the given string is a valid ISA.
-/// @param temp 
-/// @return Return true if the string contains the END pseudo-instruction, otherwise return false.
-static bool isISA(char* str) {
-    int index = 0;
-    // Check if is a label
-    if (contains(str, ',')) {
-        lcTable[lcIndex] = (str[0] << 8) | str[1];
-        lcTable[lcIndex + 1] = (str[2] << 8) | str[3];
-        lcTable[lcIndex + 2] = lc;
-        lcIndex += 3;
-        lc++;
-        return false;
-    } else if ((index = startsWith(str, "ORG"))) {
-        char hexVal[4];
-        int j = 0;
-
-        // Read the hex value
-        for (int i = (index + 1); isAHexValue(str[i]) && (j < 4); i++) {
-            hexVal[j] = str[i];
-            j++;
-        }
-
-        lc = strToHex(hexVal, j);
-        return false;
-    } else if (startsWith(str, "END")) {
-        return true;
-    }
-    
-    lc++;
-
-    return false;
-}
-
-static bool compareLabels(int label, char* str) {
-    for (int i = 0; i < 4; i++) {
-        if (str[i] != ((label >> (24 - (i * 8))) && (0b11111111))) {
-            return false;
-        }
-    }
-    return true;
-}
-
-static void formatLabel(char* str, int len) {
-    str[len] = ',';
-    for (int i = len + 1; len < 4; i++) {
-        str[i] = ' ';
-    }
-    return;
-}
-
+/// @brief Resolve the label that there's in the given string.
+/// @param str 
+/// @param index 
+/// @return Return the address of the label.
 static word resolveLabel(char* str, int index) {
     char label[5];
     int j = 0;
@@ -87,166 +36,34 @@ static word resolveLabel(char* str, int index) {
     return val;
 }
 
-static bool isMRI(char* str) {
-    int index = 0;
-    word instruction = 0;
-
-    if ((index = startsWith(str, "AND"))) {
-        // Is not necessary to set the OPR, cause and OPR is 000
-    } else if ((index = startsWith(str, "ADD"))) {
-        // Set the OPR to 001
-        instruction |= (0b001 << 12);
-    } else if ((index = startsWith(str, "LDA"))) {
-        // Set the OPR to 001
-        instruction |= (0b010 << 12);
-    } else if ((index = startsWith(str, "STA"))) {
-        // Set the OPR to 001
-        instruction |= (0b010 << 12);
-    } else if ((index = startsWith(str, "BUN"))) {
-        // Set the OPR to 001
-        instruction |= (0b010 << 12);
-    } else if ((index = startsWith(str, "BSA"))) {
-        // Set the OPR to 001
-        instruction |= (0b010 << 12);
-    } else if ((index = startsWith(str, "ISZ"))) {
-        // Set the OPR to 001
-        instruction |= (0b010 << 12);
-    } else {
-        return false;
-    }
-    
-    // Resolve the label once you've known the label position
-    instruction = resolveLabel(str, index);
-    
-    // Save the instruction into the RAM and increment the lc
-    ram[lc] = instruction;
-    lc++;
-
-    return true;
-}
-
-static bool isRRI(char* str) {
-    if (containsWord(str, "CLA")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b0111100000000000;
-    } else if (containsWord(str, "CLE")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b0111010000000000;
-    } else if (containsWord(str, "CMA")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b0111001000000000;
-    } else if (containsWord(str, "CME")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b0111000100000000;
-    } else if (containsWord(str, "CIR")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b0111000010000000;
-    } else if (containsWord(str, "CIL")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b0111000001000000;
-    } else if (containsWord(str, "INC")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b0111000000100000;
-    } else if (containsWord(str, "SPA")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b0111000000010000;
-    } else if (containsWord(str, "SNA")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b0111000000001000;
-    } else if (containsWord(str, "SZA")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b0111000000000100;
-    } else if (containsWord(str, "SZE")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b0111000000000010;
-    } else if (containsWord(str, "HLT")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b0111000000000001;
-    } else {
-        return false;
-    }
-
-    // Increment the lc
-    lc++;
-
-    return true;
-}
-
-static bool isIO(char* str) {
-    if (containsWord(str, "INP")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b1111100000000000;
-    } else if (containsWord(str, "OUT")) {
-        // Set the instruction into the ram
-        ram[lc] = 0b1111010000000000;
-    } else {
-        return false;
-    }
-
-    // Increment the lc
-    lc++;
-    return true;
-}
-
-static bool isInstruction(char* temp) {
+/// @brief Check if the given string is an instruction, and if it does save the instruction in the ram.
+/// @param temp 
+/// @return Return true if the given string contains the pseudo-instruction 'END', otherwise return false.
+static bool isInstruction(char* str) {
     int index = 0;
     
     // Check if is a pseudo-instruction
-    if ((index = startsWith(temp, "ORG"))) {
-        char hexVal[7];
-        int j = 0;
-
-        // Read the hex value
-        for (int i = (index + 1); isAHexValue(temp[i]) && (j < 4); i++) {
-            hexVal[j] = temp[i];
-            j++;
-        }
-
-        lc = strToHex(hexVal, j);
+    if (isPseudoInstruction(str)) {
         return false;
     }
     
-    if (startsWith(temp, "END")) {
+    // Check if contains the 'END' pseudo-instruction
+    if (startsWith(str, "END")) {
         return true;
     }
-
-    if ((index = startsWith(temp, "DEC"))) {
-        char val[7];
-        int j = 0;
-
-        for (int i = index + 1; temp[i] != '\0'; i++) {
-            val[j] = temp[i];
-            j++;
-        }
-
-        ram[lc] = parseInt(val, j);
-        lc++;
-        return false;
-    }
-
-    if ((index = startsWith(temp, "HEX"))) {
-        char hex[7];
-        int j = 0;
-
-        for (int i = index + 1; temp[i] != '\0'; i++) {
-            hex[j] = temp[i];
-            j++;
-        }
-
-        ram[lc] = strToHex(hex, j);
-        lc++;
-        return false;
-    }
     
-    if (isMRI(temp)) {
+    // Check if is a MRI instruction
+    if (isMRI(str)) {
         return false;
     }
 
-    if (isRRI(temp)) {
+    // Check if is a RRI instruction
+    if (isRRI(str)) {
         return false;
     }
 
-    if (isIO(temp)) {
+    // Check if is a IO instruction
+    if (isIO(str)) {
         return false;
     }
     
@@ -265,6 +82,7 @@ static char** readFile(char* filePath) {
     char** data = (char**) malloc(sizeof(char*));
     char* str = (char*) calloc(1, sizeof(char));
     int charIndex = 0, strIndex = 0;
+    linesCount = 0;
 
     // Check for errors while opening the file
     if (file == NULL) {
@@ -328,8 +146,8 @@ static char** readFile(char* filePath) {
 /// @brief Resolve the symbols inside the program.
 /// @param data 
 static void resolveSymbols(char** data) {
-    // Implement the algorithm described in the first step of the assembler
     lc = 0;
+    lcIndex = 0;
     
     for (int i = 0; i < linesCount; i++) {
         if (compareStrings(data[i], "")) {
@@ -359,6 +177,7 @@ static void assembleProgram(char** data) {
         }
 
     }
+
     return;
 }
 
@@ -374,6 +193,7 @@ char* compileFile(char* filePath) {
     // First step of the assembler
     resolveSymbols(data);
 
+    // Second step of the assembler (the real assembly is done here!)
     assembleProgram(data);
 
     printf("\nThe file has been compiled successfully!");
