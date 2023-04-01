@@ -12,12 +12,27 @@ bool contains(char* str, char c) {
     return false;
 }
 
+bool containsWord(char* str, char* cmp) {
+    int index = 0;
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (str[i] == cmp[index]) {
+            index++;
+            if (index == strlen(cmp)) {
+                return true;
+            }
+        }
+        index = 0;
+    }
+    
+    return false;
+}
+
 int startsWith(char* str, char* cmp) {
     int index = 0;
     for (int i = 0; str[i] != '\0'; i++) {
         if (str[i] == cmp[index]) {
             index++;
-            if ((index + 1) == strlen(cmp)) {
+            if (index == strlen(cmp)) {
                 return i;
             }
             continue;

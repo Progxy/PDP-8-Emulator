@@ -12,6 +12,12 @@ typedef char byte;
 /// @return Return true if it does contain the char, otherwise return false.
 bool contains(char* str, char c);
 
+/// @brief Check if the given string contains the given string.
+/// @param str 
+/// @param cmp 
+/// @return Return true if the substring matches the string, otherwise return false.
+bool containsWord(char* str, char* cmp);
+
 /// @brief Check if the given string starts with the given string.
 /// @param str 
 /// @param cmp 

@@ -87,7 +87,7 @@ static word resolveLabel(char* str, int index) {
     return val;
 }
 
-static bool isMRI(char* str, int len) {
+static bool isMRI(char* str) {
     int index = 0;
     word instruction = 0;
 
@@ -122,10 +122,73 @@ static bool isMRI(char* str, int len) {
     ram[lc] = instruction;
     lc++;
 
-    return;
+    return true;
 }
 
-static bool isInstruction(char* temp, int len) {
+static bool isRRI(char* str) {
+    if (containsWord(str, "CLA")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b0111100000000000;
+    } else if (containsWord(str, "CLE")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b0111010000000000;
+    } else if (containsWord(str, "CMA")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b0111001000000000;
+    } else if (containsWord(str, "CME")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b0111000100000000;
+    } else if (containsWord(str, "CIR")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b0111000010000000;
+    } else if (containsWord(str, "CIL")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b0111000001000000;
+    } else if (containsWord(str, "INC")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b0111000000100000;
+    } else if (containsWord(str, "SPA")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b0111000000010000;
+    } else if (containsWord(str, "SNA")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b0111000000001000;
+    } else if (containsWord(str, "SZA")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b0111000000000100;
+    } else if (containsWord(str, "SZE")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b0111000000000010;
+    } else if (containsWord(str, "HLT")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b0111000000000001;
+    } else {
+        return false;
+    }
+
+    // Increment the lc
+    lc++;
+
+    return true;
+}
+
+static bool isIO(char* str) {
+    if (containsWord(str, "INP")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b1111100000000000;
+    } else if (containsWord(str, "OUT")) {
+        // Set the instruction into the ram
+        ram[lc] = 0b1111010000000000;
+    } else {
+        return false;
+    }
+
+    // Increment the lc
+    lc++;
+    return true;
+}
+
+static bool isInstruction(char* temp) {
     int index = 0;
     
     // Check if is a pseudo-instruction
@@ -175,10 +238,21 @@ static bool isInstruction(char* temp, int len) {
         return false;
     }
     
-    if (isMRI(temp, len)) {
-        lc++;
+    if (isMRI(temp)) {
         return false;
     }
+
+    if (isRRI(temp)) {
+        return false;
+    }
+
+    if (isIO(temp)) {
+        return false;
+    }
+    
+    // Increment the lc also if the string is invalid
+    printf("\nWarning: the instruction at line %d is invalid!", lc);
+    lc++;
 
     return false;
 }
@@ -280,7 +354,7 @@ static void assembleProgram(char** data) {
             continue;
         }
 
-        if (isInstruction(data[i], strlen(data[i]))) {
+        if (isInstruction(data[i])) {
             return;
         }
 
