@@ -4,8 +4,8 @@
 #include "utils.h"
 
 bool contains(char* str, char c) {
-    for (int i = 0; i < 4; i++) {
-        if (str[i] == "") {
+    for (int i = 0; (str[i] != '\0'); i++) {
+        if (str[i] == c) {
             return true;
         }
     }

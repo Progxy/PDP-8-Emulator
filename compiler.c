@@ -11,32 +11,30 @@ static int linesCount = 0;
 
 /// @brief Check if the given string is a valid ISA.
 /// @param temp 
-/// @param len 
-/// @param file
 /// @return Return true if the string contains the END pseudo-instruction, otherwise return false.
-static bool isISA(char* temp, int len) {
+static bool isISA(char* str) {
     int index = 0;
     // Check if is a label
-    if (contains(temp, ',')) {
-        lcTable[lcIndex] = (temp[0] << 8) | temp[1];
-        lcTable[lcIndex + 1] = (temp[2] << 8) | temp[3];
+    if (contains(str, ',')) {
+        lcTable[lcIndex] = (str[0] << 8) | str[1];
+        lcTable[lcIndex + 1] = (str[2] << 8) | str[3];
         lcTable[lcIndex + 2] = lc;
         lcIndex += 3;
         lc++;
         return false;
-    } else if ((index = startsWith(temp, "ORG"))) {
+    } else if ((index = startsWith(str, "ORG"))) {
         char hexVal[4];
         int j = 0;
 
         // Read the hex value
-        for (int i = (index + 1); isAHexValue(temp[i]) && (j < 4); i++) {
-            hexVal[j] = temp[i];
+        for (int i = (index + 1); isAHexValue(str[i]) && (j < 4); i++) {
+            hexVal[j] = str[i];
             j++;
         }
 
         lc = strToHex(hexVal, j);
         return false;
-    } else if (startsWith(temp, "END")) {
+    } else if (startsWith(str, "END")) {
         return true;
     }
     
@@ -45,7 +43,7 @@ static bool isISA(char* temp, int len) {
     return false;
 }
 
-static bool compareLabels(int label, char* str, int len) {
+static bool compareLabels(int label, char* str) {
     for (int i = 0; i < 4; i++) {
         if (str[i] != ((label >> (24 - (i * 8))) && (0b11111111))) {
             return false;
@@ -54,37 +52,77 @@ static bool compareLabels(int label, char* str, int len) {
     return true;
 }
 
-static word resolveLabel(char* str, int len) {
+static void formatLabel(char* str, int len) {
+    str[len] = ',';
+    for (int i = len + 1; len < 4; i++) {
+        str[i] = ' ';
+    }
+    return;
+}
+
+static word resolveLabel(char* str, int index) {
+    char label[5];
+    int j = 0;
+
+    for (int i = index + 1; (str[i] != '\0') && (j < 3) && (str[i] != ' '); i++) {
+        label[j] = str[i];
+        j++;
+    }
+
+    // Format the label to match the structure of the labels stored
+    formatLabel(label, j);
     int val = 0;
 
     for (int i = 0; i < lcIndex; i+=3) {
-        int label = (lcTable[i] << 16) | lcTable[i + 1];
-        if (compareLabels(label, str, len)) {
+        int storedLabel = (lcTable[i] << 16) | lcTable[i + 1];
+        if (compareLabels(storedLabel, label)) {
             val = lcTable[i + 2];
             break;
         }
     }
 
+    // Check if the instruction uses indirect memory addressing
+    val |= (contains(str, 'I') << 15);
+
     return val;
 }
 
-static bool isMRI(char* temp, int len) {
+static bool isMRI(char* str, int len) {
     int index = 0;
-    word result = 0;
+    word instruction = 0;
 
-    /// add, lda, sta, bun, bsa, isz
-
-    if ((index = startsWith(temp, "AND"))) {
-        char label[7];
-        int j = 0;
-
-        for (int i = index + 1; temp[i] != '\0'; i++) {
-            label[i] = temp[i];
-            j++;
-        }
-        
-        result = resolveLabel(label, j);
+    if ((index = startsWith(str, "AND"))) {
+        // Is not necessary to set the OPR, cause and OPR is 000
+    } else if ((index = startsWith(str, "ADD"))) {
+        // Set the OPR to 001
+        instruction |= (0b001 << 12);
+    } else if ((index = startsWith(str, "LDA"))) {
+        // Set the OPR to 001
+        instruction |= (0b010 << 12);
+    } else if ((index = startsWith(str, "STA"))) {
+        // Set the OPR to 001
+        instruction |= (0b010 << 12);
+    } else if ((index = startsWith(str, "BUN"))) {
+        // Set the OPR to 001
+        instruction |= (0b010 << 12);
+    } else if ((index = startsWith(str, "BSA"))) {
+        // Set the OPR to 001
+        instruction |= (0b010 << 12);
+    } else if ((index = startsWith(str, "ISZ"))) {
+        // Set the OPR to 001
+        instruction |= (0b010 << 12);
+    } else {
+        return false;
     }
+    
+    // Resolve the label once you've known the label position
+    instruction = resolveLabel(str, index);
+    
+    // Save the instruction into the RAM and increment the lc
+    ram[lc] = instruction;
+    lc++;
+
+    return;
 }
 
 static bool isInstruction(char* temp, int len) {
@@ -151,7 +189,7 @@ static bool isInstruction(char* temp, int len) {
 static char** readFile(char* filePath) {
     FILE* file = fopen(filePath, "r");
     char** data = (char**) malloc(sizeof(char*));
-    char* str = (char*) malloc(sizeof(char));
+    char* str = (char*) calloc(1, sizeof(char));
     int charIndex = 0, strIndex = 0;
 
     // Check for errors while opening the file
@@ -169,6 +207,7 @@ static char** readFile(char* filePath) {
             while (fgetc(file) != '\n');
             charIndex = 0;
             str = (char*) realloc(str, sizeof(char));
+            str[0] = '\0';
             continue;
         } else if (tmp == '\\') {
             // Read till the end of the line
@@ -179,6 +218,7 @@ static char** readFile(char* filePath) {
             data = (char**) realloc(data, sizeof(char*) * (strIndex + 1));
             charIndex = 0;
             str = (char*) realloc(str, sizeof(char));
+            str[0] = '\0';
             continue;
         }
 
@@ -190,6 +230,7 @@ static char** readFile(char* filePath) {
             data = (char**) realloc(data, sizeof(char*) * (strIndex + 1));
             charIndex = 0;
             str = (char*) realloc(str, sizeof(char));
+            str[0] = '\0';
             continue;
         }
 
@@ -198,6 +239,7 @@ static char** readFile(char* filePath) {
         charIndex++;
         str = (char*) realloc(str, sizeof(char) * (charIndex + 1));
     }
+
     // Read the part between the last newline and the EOF
     data[strIndex] = str;
     linesCount = strIndex + 1;
@@ -220,7 +262,7 @@ static void resolveSymbols(char** data) {
             continue;
         }
 
-        if (isISA(data[i], strlen(data[i]))) {
+        if (isISA(data[i])) {
             return;
         }
     }
