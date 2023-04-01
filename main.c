@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "compiler.h"
+#include "emulator.h"
 #include "utils.h"
 
 bool isAValidFile(char* file) {
@@ -32,7 +33,7 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    runProgram();
+    emulate();
 
     return 0;
 }

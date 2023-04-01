@@ -5,9 +5,6 @@
 #include "compiler.h"
 #include "isa.h"
 
-static int tick = 0;
-static int cycle = 0;
-
 /* DECLARATION OF THE INTERNAL FUNCTIONS */
 
 /// @brief Resolve the label that there's in the given string.
@@ -54,39 +51,6 @@ char* compileFile(char* filePath) {
     printf("\nThe file has been compiled successfully!");
 
     return "OK";
-}
-
-void runProgram() {
-    // Map the cycle counter between 0 and 3
-    cycle = cycle % 4;
-
-    // Switch between the four cycles
-    switch (cycle) {
-        case 0:
-            fetchCycle();
-            cycle++;
-            break;
-        
-        case 1:
-            IMACycle();
-            cycle++;
-            break;        
-            
-        case 2:
-            executionCycle();
-            cycle++;
-            break;        
-            
-        case 3:
-            interruptCycle();
-            cycle++;
-            break;
-        
-        default:
-            break;
-    }
-
-    return runProgram();
 }
 
 /* DEFINITION OF THE INTERNAL FUNCTIONS */
