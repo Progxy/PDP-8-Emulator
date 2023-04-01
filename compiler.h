@@ -3,6 +3,7 @@ word* lcTable;
 word lc;
 int lcIndex;
 int linesCount;
+word pc;
 
 /// @brief Compile the given file.
 /// @param filePath 

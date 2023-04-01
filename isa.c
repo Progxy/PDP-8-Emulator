@@ -5,14 +5,14 @@
 
 bool isISA(char* str) {
     int index = 0;
+
     // Check if is a label
     if (contains(str, ',')) {
         lcTable[lcIndex] = (str[0] << 8) | str[1];
         lcTable[lcIndex + 1] = (str[2] << 8) | str[3];
         lcTable[lcIndex + 2] = lc;
         lcIndex += 3;
-        lc++;
-        return false;
+
     } else if ((index = startsWith(str, "ORG"))) {
         char hexVal[4];
         int j = 0;
@@ -24,9 +24,16 @@ bool isISA(char* str) {
         }
 
         lc = strToHex(hexVal, j);
+        if (pc == -1) {
+            pc = lc;
+        }
         return false;
     } else if (startsWith(str, "END")) {
         return true;
+    }
+
+    if (pc == -1) {
+        pc = lc;
     }
     
     lc++;

@@ -5,10 +5,92 @@
 #include "compiler.h"
 #include "isa.h"
 
+static int tick = 0;
+static int cycle = 0;
+
+/* DECLARATION OF THE INTERNAL FUNCTIONS */
+
 /// @brief Resolve the label that there's in the given string.
 /// @param str 
 /// @param index 
 /// @return Return the address of the label.
+static word resolveLabel(char* str, int index);
+
+/// @brief Check if the given string is an instruction, and if it does save the instruction in the ram.
+/// @param temp 
+/// @return Return true if the given string contains the pseudo-instruction 'END', otherwise return false.
+static bool isInstruction(char* str);
+
+/// @brief Read the given file.
+/// @param filePath 
+/// @return Return the data contained in the file, but if occurs an error return NULL.
+static char** readFile(char* filePath);
+
+/// @brief Resolve the symbols inside the program.
+/// @param data 
+static void resolveSymbols(char** data);
+
+/// @brief Assemble the program using the tables.
+/// @param data 
+static void assembleProgram(char** data);
+
+/* END OF DECLARATION */
+
+char* compileFile(char* filePath) {
+    char** data = readFile(filePath);
+    
+    // Check for errors while opening the file
+    if (data == NULL) {
+        printf("Error: the file can't be opened!\n");
+        return "ERR";
+    }
+
+    // First step of the assembler
+    resolveSymbols(data);
+
+    // Second step of the assembler (the real assembly is done here!)
+    assembleProgram(data);
+
+    printf("\nThe file has been compiled successfully!");
+
+    return "OK";
+}
+
+void runProgram() {
+    // Map the cycle counter between 0 and 3
+    cycle = cycle % 4;
+
+    // Switch between the four cycles
+    switch (cycle) {
+        case 0:
+            fetchCycle();
+            cycle++;
+            break;
+        
+        case 1:
+            IMACycle();
+            cycle++;
+            break;        
+            
+        case 2:
+            executionCycle();
+            cycle++;
+            break;        
+            
+        case 3:
+            interruptCycle();
+            cycle++;
+            break;
+        
+        default:
+            break;
+    }
+
+    return runProgram();
+}
+
+/* DEFINITION OF THE INTERNAL FUNCTIONS */
+
 static word resolveLabel(char* str, int index) {
     char label[5];
     int j = 0;
@@ -36,9 +118,6 @@ static word resolveLabel(char* str, int index) {
     return val;
 }
 
-/// @brief Check if the given string is an instruction, and if it does save the instruction in the ram.
-/// @param temp 
-/// @return Return true if the given string contains the pseudo-instruction 'END', otherwise return false.
 static bool isInstruction(char* str) {
     int index = 0;
     
@@ -74,9 +153,6 @@ static bool isInstruction(char* str) {
     return false;
 }
 
-/// @brief Read the given file.
-/// @param filePath 
-/// @return Return the data contained in the file, but if occurs an error return NULL.
 static char** readFile(char* filePath) {
     FILE* file = fopen(filePath, "r");
     char** data = (char**) malloc(sizeof(char*));
@@ -143,11 +219,11 @@ static char** readFile(char* filePath) {
     return data;
 }
 
-/// @brief Resolve the symbols inside the program.
-/// @param data 
 static void resolveSymbols(char** data) {
     lc = 0;
     lcIndex = 0;
+    // Init pc to -1
+    pc = -1;
     
     for (int i = 0; i < linesCount; i++) {
         if (compareStrings(data[i], "")) {
@@ -157,13 +233,12 @@ static void resolveSymbols(char** data) {
         if (isISA(data[i])) {
             return;
         }
+
     }
 
     return;
 }
 
-/// @brief Assemble the program using the tables.
-/// @param data 
 static void assembleProgram(char** data) {
     lc = 0;
     
@@ -181,26 +256,4 @@ static void assembleProgram(char** data) {
     return;
 }
 
-char* compileFile(char* filePath) {
-    char** data = readFile(filePath);
-    
-    // Check for errors while opening the file
-    if (data == NULL) {
-        printf("Error: the file can't be opened!\n");
-        return "ERR";
-    }
-
-    // First step of the assembler
-    resolveSymbols(data);
-
-    // Second step of the assembler (the real assembly is done here!)
-    assembleProgram(data);
-
-    printf("\nThe file has been compiled successfully!");
-
-    return "OK";
-}
-
-void runProgram() {
-    return;
-}
+/* END OF DEFINITION */
