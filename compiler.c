@@ -222,7 +222,8 @@ static char** readFile(char* filePath) {
 static void resolveSymbols(char** data) {
     lc = 0;
     lcIndex = 0;
-    // Init pc to -1
+
+    // Init pc to -1, to check if the pc has been already loaded
     pc = -1;
     
     for (int i = 0; i < linesCount; i++) {
