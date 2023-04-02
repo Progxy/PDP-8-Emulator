@@ -1,6 +1,8 @@
-// Contatore
+// Decremento Iterativo
 
 ORG 100
+START, LDA IN
+STA INDECR
 LDA A
 OUT
 HLT

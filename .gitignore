@@ -1,2 +1,3 @@
-# Ignore the .exe file that the compiler outputs
+# Ignore the .exe and .s files
 *.exe
+*.s
