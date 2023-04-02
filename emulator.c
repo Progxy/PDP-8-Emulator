@@ -285,6 +285,6 @@ void emulate() {
 
 void toggleMachineState() {
     s = !s;
-    printf("\nThe machine is now: %s", s ? "ON" : "OFF");
+    printf("\nThe machine is now: %s\n", s ? "ON" : "OFF");
     return;
 }
