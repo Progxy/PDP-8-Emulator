@@ -5,7 +5,7 @@ OBJS = main.c
 CC = gcc
 
 # Headers files
-HEADERS = compiler.c isa.c utils.c
+HEADERS = compiler.c isa.c utils.c emulator.c
 
 # COMPILER_FLAGS specifies the additional compilation options we're using
 COMPILER_FLAGS = -std=c11 -Wall
@@ -17,4 +17,4 @@ OBJ_NAME = pdp-8
 # LIB_FLAGS = 
 
 all : $(OBJS)
-	$(CC) $(HEADERS) $(OBJS) $(COMPILER_FLAGS) -o $(OBJ_NAME)
+	$(CC) $(OBJS) $(HEADERS) $(COMPILER_FLAGS) -o $(OBJ_NAME)

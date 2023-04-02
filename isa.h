@@ -1,8 +1,4 @@
 #pragma once
-
-#ifndef ISA_H
-#define ISA_H
-
 #include "utils.h"
 
 /// @brief Check if the given string is a valid ISA.
@@ -71,5 +67,3 @@ void hltInstruction();
 void inpInstruction();
 
 void outInstruction();
-
-#endif

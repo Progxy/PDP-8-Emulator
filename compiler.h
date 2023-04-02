@@ -1,20 +1,16 @@
 #pragma once
 
-#ifndef COMPILER_H
-#define COMPILER_H
-
 #include "utils.h"
 
-word ram[4096];
-word* lcTable;
-word lc;
-int lcIndex;
-int linesCount;
-word pc;
+inline word ram[4096];
+inline word* lcTable;
+inline word lc;
+inline int lcIndex;
+inline int linesCount;
+inline word pc;
 
 /// @brief Compile the given file.
 /// @param filePath 
 /// @return Return the compilation result.
 char* compileFile(char* filePath);
 
-#endif
