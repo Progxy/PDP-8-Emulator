@@ -147,6 +147,11 @@ word strToHex(char* str, int len) {
     int posExp = power(16, len - 1);
 
     for (int i = 0; i < len; i++) {
+        if (str[i] == '-') {
+            hex *= -1;
+            posExp /= 16;
+            continue;
+        }
         hex += posExp * charToHex(str[i]);
         posExp /= 16;
     }
@@ -159,6 +164,11 @@ word parseInt(char* str, int len) {
     int posExp = power(10, len - 1);
 
     for (int i = 0; i < len; i++) {
+        if (str[i] == '-') {
+            integer *= -1;
+            posExp /= 10;
+            continue;
+        }
         integer += posExp * charToInt(str[i]);
         posExp /= 10;
     }

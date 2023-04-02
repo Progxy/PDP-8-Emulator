@@ -1,9 +1,25 @@
 // Decremento Iterativo
 
 ORG 100
-START, LDA IN
-STA INDECR
+STR, LDA IN
+STA TMP
+ISZ CNT
+BSA DCR
+LDA TMP
 OUT
 HLT
-A, DEC 65
+
+// Decr subroutine
+DCR, DEC 0
+LDA TMP
+ADD M1
+STA TMP
+BUN DCR
+
+// Init variables
+IN, DEC 75
+M1, DEC -1
+CNT, DEC -10
+TMP, DEC 0
+
 END

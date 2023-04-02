@@ -35,7 +35,7 @@ static word resolveLabel(char* str, int index) {
     int val = -1;
 
     // Set the address using the label table
-    for (int i = 0; i < lcIndex; i+=3) {
+    for (int i = 0; i < lcIndex; i += 3) {
         int storedLabel = (lcTable[i] << 16) | lcTable[i + 1];
         int currentLabel = (label[0] << 24) | (label[1] << 16) | (label[2] << 8) | label[3];
         if (currentLabel == storedLabel) {
@@ -73,11 +73,16 @@ bool isISA(char* str) {
             tableSymbol |= temp << (24 - (i * 8));
         }
 
-        lcTable[lcIndex] = tableSymbol >> 16;
-        lcTable[lcIndex + 1] = tableSymbol;
+        // If the label is longer than 3 chars cut it at the third position
+        if (!isLabelTerminated) {
+            tableSymbol |= ',';
+        }
+
+        lcTable[lcIndex] = (tableSymbol >> 16) & (0b1111111111111111);
+        lcTable[lcIndex + 1] = tableSymbol & (0b1111111111111111);
         lcTable[lcIndex + 2] = lc;
         lcIndex += 3;
-        lcTable = (word*) realloc(lcTable, sizeof(word) * (lcIndex + 1));
+        lcTable = (word*) realloc(lcTable, sizeof(word) * (lcIndex + 3));
         lc++;
         return false;
 
@@ -230,11 +235,11 @@ bool isPseudoInstruction(char* str) {
         lc = strToHex(hexVal, j);
 
     } else if ((index = startsWith(str, "DEC"))) {
-        char val[5];
+        char val[6];
         int j = 0;
 
         // Read the dec value
-        for (int i = index + 2; str[i] != '\0' && (j < 5); i++) {
+        for (int i = index + 2; str[i] != '\0' && (j < 6); i++) {
             val[j] = str[i];
             j++;
         }
@@ -244,10 +249,10 @@ bool isPseudoInstruction(char* str) {
         lc++;
 
     } else if ((index = startsWith(str, "HEX"))) {
-        char hex[4];
+        char hex[5];
         int j = 0;
 
-        for (int i = index + 2; str[i] != '\0' && (j < 4); i++) {
+        for (int i = index + 2; str[i] != '\0' && (j < 5); i++) {
             hex[j] = str[i];
             j++;
         }
