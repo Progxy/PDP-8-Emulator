@@ -29,11 +29,8 @@ static word resolveLabel(char* str, int index) {
         j++;
     }
 
-    printf("\nCurrently found label: %s, len: %d", label, j);
-
     // Format the label to match the structure of the labels stored
     formatLabel(label, j);
-    printf("\nCurrently formatted label: %s.", label);
     int val = 0;
 
     // Set the address using the label table
@@ -218,7 +215,7 @@ bool isPseudoInstruction(char* str) {
         int j = 0;
 
         // Read the hex value
-        for (int i = (index + 1); isAHexValue(str[i]) && (j < 4); i++) {
+        for (int i = (index + 2); isAHexValue(str[i]) && (j < 4); i++) {
             hexVal[j] = str[i];
             j++;
         }
@@ -227,11 +224,11 @@ bool isPseudoInstruction(char* str) {
         lc = strToHex(hexVal, j);
 
     } else if ((index = startsWith(str, "DEC"))) {
-        char val[7];
+        char val[5];
         int j = 0;
 
         // Read the dec value
-        for (int i = index + 1; str[i] != '\0' && (i < 7); i++) {
+        for (int i = index + 2; str[i] != '\0' && (j < 5); i++) {
             val[j] = str[i];
             j++;
         }
@@ -241,10 +238,10 @@ bool isPseudoInstruction(char* str) {
         lc++;
 
     } else if ((index = startsWith(str, "HEX"))) {
-        char hex[7];
+        char hex[4];
         int j = 0;
 
-        for (int i = index + 1; str[i] != '\0' && (i < 7); i++) {
+        for (int i = index + 2; str[i] != '\0' && (j < 4); i++) {
             hex[j] = str[i];
             j++;
         }
