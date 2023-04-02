@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
         printf("Error: you must include an assembly file (.s)!");
         return -1;
     } else if (!isAValidFile(argv[1])) {
-        printf("\nError: invalid type of file!");
+        printf("\nError: invalid type of file, you must include an assembly file (.s)!");
         return -1;
     }
 
