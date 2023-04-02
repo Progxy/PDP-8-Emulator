@@ -316,7 +316,10 @@ void staInstruction() {
     word mar = mbr & 0b0111111111111;
     
     // MBR <-- AC
-    ram[mar] = ac;
+    mbr = ac;
+
+    // M <-- MBR
+    ram[mar] = mbr;
 
     return;
 }
