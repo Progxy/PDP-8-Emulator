@@ -50,7 +50,98 @@ static void executeCycle() {
     // Execute the instruction based on the content of the OPR
     switch (opr) {
         case 0b000:
+            andInstruction();
+            break;
+        
+        case 0b001:
+            addInstruction();
+            break;
+        
+        case 0b010:
+            ldaInstruction();
+            break;
+        
+        case 0b011:
+            staInstruction();
+            break;
+
+        case 0b100:
+            bunInstruction();
+            break;
+
+        case 0b101:
+            bsaInstruction();
+            break;
+        
+        case 0b110:
+            iszInstruction();
+            break;
+
+        case 0b111:
+            // Switch between IO instructions
+            if (i) {
+                if (mbr & 0b0000100000000000) {
+                    inpInstruction();
+                } else if (mbr & 0b0000010000000000) {
+                    outInstruction();
+                }
+                break;
+            }
             
+            // Switch between RRI instructions
+            switch (mbr & 0b0000111111111111) {
+                case 0b100000000000:
+                    claInstruction();
+                    break;
+
+                case 0b010000000000:
+                    cleInstruction();
+                    break;
+
+                case 0b001000000000:
+                    cmaInstruction();
+                    break;
+
+                case 0b000100000000:
+                    cmeInstruction();
+                    break;
+
+                case 0b000010000000:
+                    cirInstruction();
+                    break;
+
+                case 0b000001000000:
+                    cilInstruction();
+                    break;
+
+                case 0b000000100000:
+                    incInstruction();
+                    break;
+
+                case 0b000000010000:
+                    spaInstruction();
+                    break;
+
+                case 0b000000001000:
+                    snaInstruction();
+                    break;
+
+                case 0b000000000100:
+                    szaInstruction();
+                    break;
+
+                case 0b000000000010:
+                    szeInstruction();
+                    break;
+
+                case 0b000000000001:
+                    hltInstruction();
+                    break;
+
+                default:
+                    break;
+            }
+
             break;
         
         default:
