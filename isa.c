@@ -56,22 +56,28 @@ bool isISA(char* str) {
         lcTable[lcIndex + 1] = (str[2] << 8) | str[3];
         lcTable[lcIndex + 2] = lc;
         lcIndex += 3;
+        lcTable = (word*) realloc(lcTable, sizeof(word) * (lcIndex + 1));
+        lc++;
+        return false;
 
     } else if ((index = startsWith(str, "ORG"))) {
         char hexVal[4];
         int j = 0;
 
         // Read the hex value
-        for (int i = (index + 1); isAHexValue(str[i]) && (j < 4); i++) {
+        for (int i = (index + 2); isAHexValue(str[i]) && (j < 4); i++) {
             hexVal[j] = str[i];
             j++;
         }
 
         lc = strToHex(hexVal, j);
+        
         if (pc == -1) {
             pc = lc;
         }
+        
         return false;
+
     } else if (startsWith(str, "END")) {
         return true;
     }

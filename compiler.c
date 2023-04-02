@@ -9,7 +9,7 @@ word ram[4096];
 word* lcTable;
 word lc;
 int lcIndex;
-int linesCount;
+static int linesCount;
 word pc;
 
 /* DECLARATION OF THE INTERNAL FUNCTIONS */
@@ -110,8 +110,7 @@ static char** readFile(char* filePath) {
             // Read till the end of the line
             while (fgetc(file) != '\n');
             charIndex = 0;
-            str = (char*) realloc(str, sizeof(char));
-            str[0] = '\0';
+            str = (char*) calloc(1, sizeof(char));
             continue;
         } else if (tmp == '\\') {
             // Read till the end of the line
@@ -121,8 +120,7 @@ static char** readFile(char* filePath) {
             strIndex++;
             data = (char**) realloc(data, sizeof(char*) * (strIndex + 1));
             charIndex = 0;
-            str = (char*) realloc(str, sizeof(char));
-            str[0] = '\0';
+            str = (char*) calloc(1, sizeof(char));
             continue;
         }
 
@@ -133,8 +131,7 @@ static char** readFile(char* filePath) {
             strIndex++;
             data = (char**) realloc(data, sizeof(char*) * (strIndex + 1));
             charIndex = 0;
-            str = (char*) realloc(str, sizeof(char));
-            str[0] = '\0';
+            str = (char*) calloc(1, sizeof(char));
             continue;
         }
 
@@ -150,7 +147,6 @@ static char** readFile(char* filePath) {
     
     // Dispose the resources
     fclose(file);
-    free(str);
 
     return data;
 }
@@ -158,12 +154,14 @@ static char** readFile(char* filePath) {
 static void resolveSymbols(char** data) {
     lc = 0;
     lcIndex = 0;
+    lcTable = (word*) calloc(3, sizeof(word));
 
     // Init pc to -1, to check if the pc has been already loaded
     pc = -1;
     
     for (int i = 0; i < linesCount; i++) {
-        if (compareStrings(data[i], "")) {
+        if (!strlen(data[i])) {
+            printf("\nThe string at line: %d is empty!", i + 1);
             continue;
         }
 
