@@ -1,6 +1,7 @@
+// prova commento
 ORG 100
 LDA X
-OUT
+OUT // prova commento
 HLT
 X, DEC 65
 END
