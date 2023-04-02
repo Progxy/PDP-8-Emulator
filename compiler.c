@@ -189,7 +189,6 @@ static void assembleProgram(char** data) {
     
     for (int i = 0; i < linesCount; i++) {
         if (!strlen(data[i])) {
-            printf("\nThe string at line: %d is empty!", i + 1);
             continue;
         }
 
