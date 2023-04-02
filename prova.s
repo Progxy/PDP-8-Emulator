@@ -1,7 +1,7 @@
 // Contatore
 
 ORG 100
-LDA X
+LDA A
 OUT
 HLT
 A, DEC 65
