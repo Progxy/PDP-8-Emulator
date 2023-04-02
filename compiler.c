@@ -200,4 +200,6 @@ static void assembleProgram(char** data) {
     return;
 }
 
+//TODO: Implement a linter/code analysis tool
+
 /* END OF DEFINITION */
