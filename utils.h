@@ -1,3 +1,9 @@
+#pragma once
+
+#ifndef UTILS_H
+#define UTILS_H
+#endif
+
 typedef int bool;
 typedef short word;
 typedef char byte;

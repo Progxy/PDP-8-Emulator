@@ -1,3 +1,11 @@
+#pragma once
+
+#ifndef ISA_H
+#define ISA_H
+#endif
+
+#include "utils.h"
+
 /// @brief Check if the given string is a valid ISA.
 /// @param temp 
 /// @return Return true if the string contains the END pseudo-instruction, otherwise return false.
