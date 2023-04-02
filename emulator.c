@@ -16,11 +16,11 @@ byte opr = 0;
 byte e = 0;
 byte i = 0;
 byte s = 0;
-static const char* cyclesNames[] = {"FETCH", "IMA", "EXECUTE"};
+static const char* cyclesNames[] = {"FETCH", "IMA", "EXECUTE", "-"};
 static const char* mriNames[] = {"AND", "ADD", "LDA", "STA", "BUN", "BSA", "ISZ", ""};
 static const char* rriNames[] = {"HLT", "SZE", "SZA", "SNA", "SPA", "INC", "CIL", "CIR", "CME", "CMA", "CLE", "CLA"};
 static const char* ioNames[] = {"OUT", "INP"};
-static int currentCycle = 0;
+static int currentCycle = 3;
 
 static void fetchCycle() {
     // Read the instruction from the memory
