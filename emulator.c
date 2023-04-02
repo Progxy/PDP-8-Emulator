@@ -209,7 +209,7 @@ static void executeCycle() {
                     }
                     hltInstruction();
                     break;
-                    
+
             }
 
             break;
@@ -223,6 +223,7 @@ static void executeCycle() {
 
 /// @brief Print the content of every register.
 static void printMachineInfo() {
+    printf("\n------------------- REGISTERS INFO -------------------\n");
     printf("\nPC register: ");
     printBits(pc, getBitSize(pc));
     printf("\nAC register: ");
@@ -237,6 +238,7 @@ static void printMachineInfo() {
     printBits(i, getBitSize(i));
     printf("\nS register: ");
     printBits(s, getBitSize(s));
+    printf("\n------------------------------------------------------\n");
     return;
 }
 
