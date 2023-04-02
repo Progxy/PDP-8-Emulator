@@ -60,7 +60,6 @@ char* compileFile(char* filePath) {
 static bool isInstruction(char* str, int currentLine) {
     // Check if is a pseudo-instruction
     if (isPseudoInstruction(str)) {
-        printf("\nIs pseudo-instruction!");
         return false;
     }
     
@@ -71,19 +70,16 @@ static bool isInstruction(char* str, int currentLine) {
     
     // Check if is a MRI instruction
     if (isMRI(str)) {
-        printf("\nIs MRI instruction!");
         return false;
     }
 
     // Check if is a RRI instruction
     if (isRRI(str)) {
-        printf("\nIs is RRI instruction!");
         return false;
     }
 
     // Check if is a IO instruction
     if (isIO(str)) {
-        printf("\nIs IO instruction!");
         return false;
     }
     
@@ -183,7 +179,6 @@ static void assembleProgram(char** data) {
     lc = 0;
     
     for (int i = 0; i < linesCount; i++) {
-        printf("\nCurrently evaluating: %s", data[i]);
         if (!strlen(data[i])) {
             printf("\nThe string at line: %d is empty!", i + 1);
             continue;

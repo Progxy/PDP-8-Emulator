@@ -50,7 +50,5 @@ int main(int argc, char** argv) {
     // Start emulating the program loaded into the RAM
     emulate();
 
-    toggleMachineState();
-
     return 0;
 }
