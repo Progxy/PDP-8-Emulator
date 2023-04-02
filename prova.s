@@ -1,7 +1,8 @@
-// prova commento
+// Contatore
+
 ORG 100
 LDA X
-OUT // prova commento
+OUT
 HLT
-X, DEC 65
+A, DEC 65
 END

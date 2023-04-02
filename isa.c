@@ -15,6 +15,7 @@ extern byte opr;
 extern byte e;
 extern byte i;
 extern byte s;
+extern bool errorFlag;
 
 /// @brief Resolve the label that there's in the given string.
 /// @param str 
@@ -31,7 +32,7 @@ static word resolveLabel(char* str, int index) {
 
     // Format the label to match the structure of the labels stored
     formatLabel(label, j);
-    int val = 0;
+    int val = -1;
 
     // Set the address using the label table
     for (int i = 0; i < lcIndex; i+=3) {
@@ -41,6 +42,11 @@ static word resolveLabel(char* str, int index) {
             val = lcTable[i + 2];
             break;
         }
+    }
+
+    if (val == -1) {
+        errorFlag = true;
+        return val;
     }
 
     // Check if the instruction uses indirect memory addressing

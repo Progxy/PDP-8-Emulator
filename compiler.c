@@ -11,6 +11,7 @@ word lc;
 int lcIndex;
 static int linesCount;
 word pc;
+bool errorFlag = false;
 
 /* DECLARATION OF THE INTERNAL FUNCTIONS */
 
@@ -50,6 +51,11 @@ char* compileFile(char* filePath) {
     // Second step of the assembler (the real assembly is done here!)
     assembleProgram(data);
 
+    if (errorFlag) {
+        printf("\nThe compilation terminated with an error!");
+        return "FAILED";
+    }
+
     printf("\nThe file has been compiled successfully!");
 
     return "OK";
@@ -70,6 +76,9 @@ static bool isInstruction(char* str, int currentLine) {
     
     // Check if is a MRI instruction
     if (isMRI(str)) {
+        if (errorFlag) {
+            printf("\nError: Unresolved symbol at line %d!", currentLine);
+        }
         return false;
     }
 
@@ -184,7 +193,7 @@ static void assembleProgram(char** data) {
             continue;
         }
 
-        if (isInstruction(data[i], i)) {
+        if (isInstruction(data[i], i) || errorFlag) {
             return;
         }
 

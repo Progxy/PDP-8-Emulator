@@ -4,7 +4,7 @@
 #include "emulator.h"
 #include "utils.h"
 
-bool step = false;
+bool stepFlag = false;
 
 bool isAValidFile(char* file) {
     char* fileExt = strchr(file, '.');
@@ -32,12 +32,14 @@ int main(int argc, char** argv) {
 
     char* infoCompile = compileFile(filePath);
 
+    // Check the status of the compilation
     if (strcmp(infoCompile, "OK")) {
         return -1;
     }
 
+    // Check for extra flags
     if (argc == 3) {
-        step = !strcmp(argv[2], "-step");
+        stepFlag = !strcmp(argv[2], "-step");
         // Check the compile only flag
         if (!strcmp(argv[2], "-c")) {
             return 0;
