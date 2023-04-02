@@ -30,16 +30,12 @@ void askContinue(char* str) {
     // Prompt the user
     char confirm;
     scanf("%c", &confirm);
-    cleanStdin();
 
-    if (confirm == 'Y') {
-        return;
-    } else if (confirm == 'N') {
-        return askContinue(str);
+    // Clean the stdin if the user inputs something else than '\n'
+    if (confirm != '\n') {
+        return cleanStdin();
     }
-    
-    printf("Invalid character!\n");
-    return askContinue(str);
+    return;
 }
 
 bool compareLabels(int label, char* str) {

@@ -197,7 +197,7 @@ void emulate() {
     // If the stepFlag mode is active, then wait the user's confirm to continue with the next cycle
     if (stepFlag) {
         printMachineInfo();
-        askContinue("Do you want to stepFlag to the next instruction ? (Y/N): ");
+        askContinue("Press ENTER to step to the next instruction: ");
         printf("\n");
     }
 
