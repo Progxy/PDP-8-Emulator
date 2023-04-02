@@ -7,12 +7,6 @@
 
 /* DECLARATION OF THE INTERNAL FUNCTIONS */
 
-/// @brief Resolve the label that there's in the given string.
-/// @param str 
-/// @param index 
-/// @return Return the address of the label.
-static word resolveLabel(char* str, int index);
-
 /// @brief Check if the given string is an instruction, and if it does save the instruction in the ram.
 /// @param temp 
 /// @return Return true if the given string contains the pseudo-instruction 'END', otherwise return false.
@@ -55,36 +49,7 @@ char* compileFile(char* filePath) {
 
 /* DEFINITION OF THE INTERNAL FUNCTIONS */
 
-static word resolveLabel(char* str, int index) {
-    char label[5];
-    int j = 0;
-
-    for (int i = index + 1; (str[i] != '\0') && (j < 3) && (str[i] != ' '); i++) {
-        label[j] = str[i];
-        j++;
-    }
-
-    // Format the label to match the structure of the labels stored
-    formatLabel(label, j);
-    int val = 0;
-
-    for (int i = 0; i < lcIndex; i+=3) {
-        int storedLabel = (lcTable[i] << 16) | lcTable[i + 1];
-        if (compareLabels(storedLabel, label)) {
-            val = lcTable[i + 2];
-            break;
-        }
-    }
-
-    // Check if the instruction uses indirect memory addressing
-    val |= (contains(str, 'I') << 15);
-
-    return val;
-}
-
 static bool isInstruction(char* str) {
-    int index = 0;
-    
     // Check if is a pseudo-instruction
     if (isPseudoInstruction(str)) {
         return false;

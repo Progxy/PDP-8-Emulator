@@ -101,7 +101,7 @@ bool compareStrings(char* str1, char* str2) {
     return true;
 }
 
-int pow(int base, int exp) {
+int power(int base, int exp) {
     if (exp == 0) {
         return 1;
     }
@@ -135,7 +135,7 @@ static word charToInt(char c) {
 
 word strToHex(char* str, int len) {
     word hex = 0x00;
-    int posExp = pow(16, len - 1);
+    int posExp = power(16, len - 1);
 
     for (int i = 0; i < len; i++) {
         hex += posExp * charToHex(str[i]);
@@ -147,10 +147,10 @@ word strToHex(char* str, int len) {
 
 word parseInt(char* str, int len) {
     word integer = 0x00;
-    int posExp = pow(10, len - 1);
+    int posExp = power(10, len - 1);
 
     for (int i = 0; i < len; i++) {
-        integer += posExp * charToHex(str[i]);
+        integer += posExp * charToInt(str[i]);
         posExp /= 10;
     }
 

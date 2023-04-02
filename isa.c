@@ -4,6 +4,37 @@
 #include "compiler.h"
 #include "emulator.h"
 
+/// @brief Resolve the label that there's in the given string.
+/// @param str 
+/// @param index 
+/// @return Return the address of the label.
+static word resolveLabel(char* str, int index) {
+    char label[5];
+    int j = 0;
+
+    for (int i = index + 1; (str[i] != '\0') && (j < 3) && (str[i] != ' '); i++) {
+        label[j] = str[i];
+        j++;
+    }
+
+    // Format the label to match the structure of the labels stored
+    formatLabel(label, j);
+    int val = 0;
+
+    for (int i = 0; i < lcIndex; i+=3) {
+        int storedLabel = (lcTable[i] << 16) | lcTable[i + 1];
+        if (compareLabels(storedLabel, label)) {
+            val = lcTable[i + 2];
+            break;
+        }
+    }
+
+    // Check if the instruction uses indirect memory addressing
+    val |= (contains(str, 'I') << 15);
+
+    return val;
+}
+
 bool isISA(char* str) {
     int index = 0;
 
@@ -262,7 +293,7 @@ void bsaInstruction() {
     pc = mbr && 0b0111111111111;
 
     // MBR(ADDR) <-- PC
-    mbr = pc;
+    mbr = temp;
 
     // M <-- MBR
     ram[mar] = mbr;
@@ -339,7 +370,7 @@ void cilInstruction() {
 
     // AC <-- AC(2 - 16)-E
     ac = ac << 1;
-    ac |= e;
+    ac |= temp;
     
     return;
 }

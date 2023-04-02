@@ -48,7 +48,7 @@ bool compareStrings(char* str1, char* str2);
 /// @param base 
 /// @param exp 
 /// @return Return the power of the given number.
-int pow(int base, int exp);
+int power(int base, int exp);
 
 /// @brief Convert the given string to the corresponding hex value.
 /// @param str 
