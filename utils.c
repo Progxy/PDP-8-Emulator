@@ -145,10 +145,11 @@ static word charToInt(char c) {
 word strToHex(char* str, int len) {
     word hex = 0x00;
     int posExp = power(16, len - 1);
+    bool isNegative = false;
 
     for (int i = 0; i < len; i++) {
         if (str[i] == '-') {
-            hex *= -1;
+            isNegative = true;
             posExp /= 16;
             continue;
         }
@@ -156,22 +157,27 @@ word strToHex(char* str, int len) {
         posExp /= 16;
     }
 
+    hex = isNegative ? -1 : 1;
+
     return hex;
 }
 
 word parseInt(char* str, int len) {
     word integer = 0x00;
     int posExp = power(10, len - 1);
+    bool isNegative = false;
 
     for (int i = 0; i < len; i++) {
         if (str[i] == '-') {
-            integer *= -1;
+            isNegative = true;
             posExp /= 10;
             continue;
         }
         integer += posExp * charToInt(str[i]);
         posExp /= 10;
     }
+
+    integer *= isNegative ? -1 : 1;
 
     return integer;
 }
