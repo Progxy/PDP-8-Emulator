@@ -1,1 +1,2 @@
+# Ignore the .exe file that the compiler outputs
 *.exe
