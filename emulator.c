@@ -20,6 +20,7 @@ static const char* cyclesNames[] = {"FETCH", "IMA", "EXECUTE"};
 static const char* mriNames[] = {"AND", "ADD", "LDA", "STA", "BUN", "BSA", "ISZ", ""};
 static const char* rriNames[] = {"HLT", "SZE", "SZA", "SNA", "SPA", "INC", "CIL", "CIR", "CME", "CMA", "CLE", "CLA"};
 static const char* ioNames[] = {"OUT", "INP"};
+static int currentCycle = 0;
 
 static void fetchCycle() {
     // Read the instruction from the memory
@@ -179,11 +180,16 @@ static void printMachineInfo() {
     printBits(i, getBitSize(i));
     printf("\nS register: ");
     printBits(s, getBitSize(s));
+    printf("\nCurrent cycle: %s", cyclesNames[currentCycle]);
     printf("\nNext cycle: %s", cyclesNames[cycle]);
     if (cycle == 2) {
         printf(" - (%s%s%s Instruction)", mriNames[(int) opr], (opr == 7 && !i) ? rriNames[logaritm(mbr & 0b0000111111111111)] : "", (opr == 7 && i) ? ioNames[logaritm(mbr & 0b0000111111111111) - 10] : "");
     }
     printf("\n\n------------------------------------------------------\n");
+
+    // Update currentCycle
+    currentCycle = cycle;
+
     return;
 }
 
