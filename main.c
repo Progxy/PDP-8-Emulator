@@ -33,7 +33,19 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    emulate();
+    bool step = false;
+
+    if (argc == 3) {
+        step = containsWord(argv[2], "true");
+    }
+
+    // Turn on the machine
+    toggleMachineState();
+
+    // Start emulating the program loaded into the RAM
+    emulate(step);
+
+    toggleMachineState();
 
     return 0;
 }

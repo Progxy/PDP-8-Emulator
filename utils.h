@@ -6,6 +6,9 @@ typedef char byte;
 #define min(a,b) (a <= b ? a : b)
 #define isAHexValue(c) (((c >= 65) && (c <= 70)) || ((c >= 97) && (c <= 102)) ||((c >= 48) && (c <= 57)))
 
+/// @brief Ask if the user wants to continue.
+void askContinue(char* str);
+
 /// @brief Check if the given string matches the given label.
 /// @param label 
 /// @param str 

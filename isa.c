@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "utils.h"
 #include "compiler.h"
+#include "emulator.h"
 
 bool isISA(char* str) {
     int index = 0;
@@ -190,4 +191,218 @@ bool isPseudoInstruction(char* str) {
     }
 
     return true;
+}
+
+void andInstruction() {
+    // MAR <-- MBR(ADDR)
+    word mar = mbr && 0b0111111111111;
+    
+    // MBR <-- M
+    mbr = ram[mar];
+
+    // AC <-- AC & MBR
+    ac = ac & mbr;
+
+    return;
+}
+
+void addInstruction() {
+    // MAR <-- MBR(ADDR)
+    word mar = mbr && 0b0111111111111;
+    
+    // MBR <-- M
+    mbr = ram[mar];
+
+    // E-AC <-- AC + MBR
+    int temp = ac + mbr;
+
+    // Extract and load the AC and the E registers content
+    e = temp >> 16;
+    ac = temp & 0b1111111111111111;
+
+    return;
+}
+
+void ldaInstruction() {
+    // MAR <-- MBR(ADDR)
+    word mar = mbr && 0b0111111111111;
+    
+    // MBR <-- M
+    mbr = ram[mar];
+
+    // AC <-- MBR
+    ac = mbr;
+
+    return;
+}
+
+void staInstruction() {
+    // MAR <-- MBR(ADDR)
+    word mar = mbr && 0b0111111111111;
+    
+    // MBR <-- AC
+    ram[mar] = ac;
+
+    return;
+}
+
+void bunInstruction() {
+    // PC <-- MBR(ADDR)
+    pc = mbr && 0b0111111111111;
+    return;
+}
+
+void bsaInstruction() {
+    // MAR <-- MBR(ADDR)
+    word mar = mbr && 0b0111111111111;
+    
+    word temp = pc;
+
+    // PC <-- MBR(ADDR)
+    pc = mbr && 0b0111111111111;
+
+    // MBR(ADDR) <-- PC
+    mbr = pc;
+
+    // M <-- MBR
+    ram[mar] = mbr;
+
+    // PC <-- PC + 1
+    pc++;
+
+    return;
+}
+
+void iszInstruction() {
+    // MAR <-- MBR(ADDR)
+    word mar = mbr && 0b0111111111111;
+    
+    // MBR <-- M
+    mbr = ram[mar];
+
+    // MBR <-- MBR + 1
+    mbr++;
+    
+    // M <-- MBR
+    ram[mar] = mbr;
+
+    // If the MBR is 0 then PC <-- PC + 1
+    if (!mbr) {
+        pc++;
+    }
+
+    return;
+}
+
+void claInstruction() {
+    // AC <- 0
+    ac = 0;
+    return;
+}
+
+void cleInstruction() {
+    // E <- 0
+    e = 0;
+    return;
+}
+
+void cmaInstruction() {
+    // AC <- AC'
+    ac = ~ac;
+    return;
+}
+
+void cmeInstruction() {
+    // E <- E'
+    e = ~e;
+    return;
+}
+
+void cirInstruction() {
+    byte temp = e;
+
+    // E <-- AC(16)
+    e = ac & 0b01;
+    
+    // AC <-- E-AC(1 - 15)
+    ac = ac >> 1;
+    ac |= (temp << 15);
+
+    return;
+}
+
+void cilInstruction() {
+    byte temp = e; 
+
+    // E <-- AC(1)
+    e = (ac >> 15);
+
+    // AC <-- AC(2 - 16)-E
+    ac = ac << 1;
+    ac |= e;
+    
+    return;
+}
+
+void incInstruction() {
+    // E-AC <-- E-AC + 1
+    int temp = ((e << 16) & ac) + 1;
+
+    // Extract and load the AC and the E registers content
+    e = temp >> 16;
+    ac = temp & 0b1111111111111111;
+    return;
+}
+
+void spaInstruction() {
+    // If AC(1) == 0, then PC <-- PC + 1
+    if ((ac >> 15) == 0) {
+        pc++;
+    }
+    return;
+}
+
+void snaInstruction() {
+    // If AC(1) == 1, then PC <-- PC + 1
+    if ((ac >> 15) == 1) {
+        pc++;
+    }
+    return;
+}
+
+void szaInstruction() {
+    // If AC == 0, then PC <-- PC + 1
+    if (ac == 0) {
+        pc++;
+    }
+    return;
+}
+
+void szeInstruction() {
+    // If E == 0, then PC <-- PC + 1
+    if (e == 0) {
+        pc++;
+    }
+    return;
+}
+
+void hltInstruction() {
+    // S <-- 0
+    s = 0;
+    return;
+}
+
+void inpInstruction() {
+    // AC <-- ASCII(Keyboard)
+    char c;
+    scanf("%c", &c);
+    ac = c;
+
+    return;
+}
+
+void outInstruction() {
+    // Terminal <-- ASCII(AC)
+    printf("%c%c", ac >> 8, ac & (0b11111111));
+    return;
 }

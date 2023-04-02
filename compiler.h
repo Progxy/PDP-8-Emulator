@@ -1,3 +1,5 @@
+#include "utils.h"
+
 word ram[4096];
 word* lcTable;
 word lc;

@@ -22,3 +22,45 @@ bool isIO(char* str);
 /// @param str 
 /// @return Return true if the given string is a Pseudo-Instruction, otherwise return false.
 bool isPseudoInstruction(char* str);
+
+void andInstruction();
+
+void addInstruction();
+
+void ldaInstruction();
+
+void staInstruction();
+
+void bunInstruction();
+
+void bsaInstruction();
+
+void iszInstruction();
+
+void claInstruction();
+
+void cleInstruction();
+
+void cmaInstruction();
+
+void cmeInstruction();
+
+void cirInstruction();
+
+void cilInstruction();
+
+void incInstruction();
+
+void spaInstruction();
+
+void snaInstruction();
+
+void szaInstruction();
+
+void szeInstruction();
+
+void hltInstruction();
+
+void inpInstruction();
+
+void outInstruction();

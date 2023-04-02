@@ -3,6 +3,37 @@
 #include <string.h>
 #include "utils.h"
 
+void cleanStdin() {
+    unsigned char c;
+
+    while ((c = getc(stdin)) != EOF) {
+        if (c == '\n') {
+            break;          
+        }
+    } 
+    
+    return;
+}
+
+void askContinue(char* str) {
+    // Print the given text
+    printf("\n%s", str);
+    
+    // Prompt the user
+    char confirm;
+    scanf("%c", &confirm);
+    cleanStdin();
+
+    if (confirm == 'Y') {
+        return;
+    } else if (confirm == 'N') {
+        return askContinue(str);
+    }
+    
+    printf("Invalid character!\n");
+    return askContinue(str);
+}
+
 bool compareLabels(int label, char* str) {
     for (int i = 0; i < 4; i++) {
         if (str[i] != ((label >> (24 - (i * 8))) && (0b11111111))) {
