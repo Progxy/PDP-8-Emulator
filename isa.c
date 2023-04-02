@@ -50,7 +50,7 @@ static word resolveLabel(char* str, int index) {
     }
 
     // Check if the instruction uses indirect memory addressing
-    val |= (contains(str, 'I') << 15);
+    val |= (endsWith(str, 'I') << 15);
 
     return val;
 }

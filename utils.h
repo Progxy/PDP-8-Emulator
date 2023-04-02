@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string.h>
+
 typedef int bool;
 typedef short word;
 typedef char byte;
@@ -8,6 +10,7 @@ typedef char byte;
 #define min(a,b) (a <= b ? a : b)
 #define isAHexValue(c) (((c >= 65) && (c <= 70)) || ((c >= 97) && (c <= 102)) ||((c >= 48) && (c <= 57)))
 #define getBitSize(val) ((sizeof(val) * 8) - 1)
+#define endsWith(str, c) (str[strlen(str) - 1] == c)
 
 /// @brief Print the given value as a binary string.
 /// @param val 
