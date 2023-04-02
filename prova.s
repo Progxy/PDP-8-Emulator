@@ -1,0 +1,6 @@
+ORG 100
+LDA X
+OUT
+HLT
+X, DEC 65
+END

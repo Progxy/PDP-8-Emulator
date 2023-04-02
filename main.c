@@ -37,7 +37,8 @@ int main(int argc, char** argv) {
     bool step = false;
 
     if (argc == 3) {
-        step = containsWord(argv[2], "true");
+        step = containsWord(argv[2], "-step");
+        printf("\nStep mode on!");
     }
 
     // Turn on the machine
