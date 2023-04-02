@@ -1,3 +1,9 @@
+#pragma once
+
+#ifndef EMULATOR_H
+#define EMULATOR_H
+#endif
+
 #include "utils.h"
 
 word ac = 0;

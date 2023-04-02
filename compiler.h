@@ -1,3 +1,10 @@
+#pragma once
+
+#ifndef COMPILER_H
+#define COMPILER_H
+#endif
+
+
 #include "utils.h"
 
 word ram[4096];
