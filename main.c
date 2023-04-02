@@ -10,7 +10,7 @@ bool isAValidFile(char* file) {
         return false;
     }
     
-    if (!strcmp(fileExt, ".a")) {
+    if (!strcmp(fileExt, ".s")) {
         return true;
     }
 
@@ -19,7 +19,7 @@ bool isAValidFile(char* file) {
 
 int main(int argc, char** argv) {
     if (argc == 1) {
-        printf("Error: you must include an assembly file!");
+        printf("Error: you must include an assembly file (.s)!");
         return -1;
     } else if (!isAValidFile(argv[1])) {
         printf("\nError: invalid type of file!");
