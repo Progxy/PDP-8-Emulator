@@ -47,6 +47,8 @@ int main(int argc, char** argv) {
     // Turn on the machine
     toggleMachineState();
 
+    printf("\nOUTPUT: \n");
+
     // Start emulating the program loaded into the RAM
     emulate();
 
