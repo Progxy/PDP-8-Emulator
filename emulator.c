@@ -16,6 +16,10 @@ byte opr = 0;
 byte e = 0;
 byte i = 0;
 byte s = 0;
+static const char* cyclesNames[] = {"FETCH", "IMA", "EXECUTE"};
+static const char* mriNames[] = {"AND", "ADD", "LDA", "STA", "BUN", "BSA", "ISZ", ""};
+static const char* rriNames[] = {"HLT", "SZE", "SZA", "SNA", "SPA", "INC", "CIL", "CIR", "CME", "CMA", "CLE", "CLA"};
+static const char* ioNames[] = {"OUT", "INP"};
 
 static void fetchCycle() {
     // Read the instruction from the memory
@@ -59,51 +63,30 @@ static void executeCycle() {
     // Execute the instruction based on the content of the OPR
     switch (opr) {
         case 0b000:
-            if (stepFlag) {
-                printf("\nExecuting AND instruction!");
-            }
             andInstruction();
             break;
         
         case 0b001:
-            if (stepFlag) {
-                printf("\nExecuting ADD instruction!");
-            }
             addInstruction();
             break;
         
         case 0b010:
-            if (stepFlag) {
-                printf("\nExecuting LDA instruction!");
-            }
             ldaInstruction();
             break;
         
         case 0b011:
-            if (stepFlag) {
-                printf("\nExecuting STA instruction!");
-            }
             staInstruction();
             break;
 
         case 0b100:
-            if (stepFlag) {
-                printf("\nExecuting BUN instruction!");
-            }
             bunInstruction();
             break;
 
         case 0b101:
-            if (stepFlag) {
-                printf("\nExecuting BSA instruction!");
-            }
             bsaInstruction();
             break;
         
         case 0b110:
-            if (stepFlag) {
-                printf("\nExecuting ISZ instruction!");
-            }
             iszInstruction();
             break;
 
@@ -111,14 +94,8 @@ static void executeCycle() {
             // Switch between IO instructions
             if (i) {
                 if (mbr & 0b0000100000000000) {
-                    if (stepFlag) {
-                        printf("\nExecuting INP instruction!");
-                    }
                     inpInstruction();
                 } else if (mbr & 0b0000010000000000) {
-                    if (stepFlag) {
-                        printf("\nExecuting OUT instruction!");
-                    }
                     outInstruction();
                 }
                 break;
@@ -127,86 +104,50 @@ static void executeCycle() {
             // Switch between RRI instructions
             switch (mbr & 0b0000111111111111) {
                 case 0b100000000000:
-                    if (stepFlag) {
-                        printf("\nExecuting CLA instruction!");
-                    }
                     claInstruction();
                     break;
 
                 case 0b010000000000:
-                    if (stepFlag) {
-                        printf("\nExecuting CLE instruction!");
-                    }
                     cleInstruction();
                     break;
 
                 case 0b001000000000:
-                    if (stepFlag) {
-                        printf("\nExecuting CMA instruction!");
-                    }
                     cmaInstruction();
                     break;
 
                 case 0b000100000000:
-                    if (stepFlag) {
-                        printf("\nExecuting CME instruction!");
-                    }
                     cmeInstruction();
                     break;
 
                 case 0b000010000000:
-                    if (stepFlag) {
-                        printf("\nExecuting CIR instruction!");
-                    }
                     cirInstruction();
                     break;
 
                 case 0b000001000000:
-                    if (stepFlag) {
-                        printf("\nExecuting CIL instruction!");
-                    }
                     cilInstruction();
                     break;
 
                 case 0b000000100000:
-                    if (stepFlag) {
-                        printf("\nExecuting INC instruction!");
-                    }
                     incInstruction();
                     break;
 
                 case 0b000000010000:
-                    if (stepFlag) {
-                        printf("\nExecuting SPA instruction!");
-                    }
                     spaInstruction();
                     break;
 
                 case 0b000000001000:
-                    if (stepFlag) {
-                        printf("\nExecuting SNA instruction!");
-                    }
                     snaInstruction();
                     break;
 
                 case 0b000000000100:
-                    if (stepFlag) {
-                        printf("\nExecuting SZA instruction!");
-                    }
                     szaInstruction();
                     break;
 
                 case 0b000000000010:
-                    if (stepFlag) {
-                        printf("\nExecuting SZE instruction!");
-                    }
                     szeInstruction();
                     break;
 
                 case 0b000000000001:
-                    if (stepFlag) {
-                        printf("\nExecuting HLT instruction!");
-                    }
                     hltInstruction();
                     break;
 
@@ -238,6 +179,10 @@ static void printMachineInfo() {
     printBits(i, getBitSize(i));
     printf("\nS register: ");
     printBits(s, getBitSize(s));
+    printf("\nNext cycle: %s", cyclesNames[cycle]);
+    if (cycle == 2) {
+        printf(" - (%s%s%s Instruction)", mriNames[(int) opr], (opr == 7 && !i) ? rriNames[logaritm(mbr & 0b0000111111111111)] : "", (opr == 7 && i) ? ioNames[logaritm(mbr & 0b0000111111111111) - 10] : "");
+    }
     printf("\n------------------------------------------------------\n");
     return;
 }
@@ -259,23 +204,14 @@ void emulate() {
     // Switch between the four cycles
     switch (cycle) {
         case 0:
-            if (stepFlag) {
-                printf("\nEntering the fetch cycle!");
-            }
             fetchCycle();
             break;
         
         case 1:
-            if (stepFlag) {
-                printf("\nEntering the IMA cycle!");
-            }
             IMACycle();
             break;        
             
         case 2:
-            if (stepFlag) {
-                printf("\nEntering the execute cycle!");
-            }
             executeCycle();
             break;        
     }

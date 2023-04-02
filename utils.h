@@ -12,6 +12,11 @@ typedef char byte;
 #define getBitSize(val) ((sizeof(val) * 8) - 1)
 #define endsWith(str, c) (str[strlen(str) - 1] == c)
 
+/// @brief Calculate the log of the given value in base 2.
+/// @param val 
+/// @return Return the log of the given value in base 2.
+int logaritm(int val);
+
 /// @brief Print the given value as a binary string.
 /// @param val 
 /// @param limit 

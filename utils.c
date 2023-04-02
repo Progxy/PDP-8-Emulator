@@ -181,3 +181,11 @@ word parseInt(char* str, int len) {
 
     return integer;
 }
+
+int logaritm(int val) {
+    int result = 0;
+    for (result = 0; val != 1; result++) {
+        val = val >> 1;
+    }
+    return result;
+}
