@@ -246,7 +246,6 @@ bool isPseudoInstruction(char* str) {
 
         // Store the value in the ram at the current value of lc and increment the lc
         ram[lc] = parseInt(val, j);
-        printf("\nVal: %d", ram[lc]);
         lc++;
 
     } else if ((index = startsWith(str, "HEX"))) {
