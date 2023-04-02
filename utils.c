@@ -69,6 +69,7 @@ bool containsWord(char* str, char* cmp) {
             if (index == strlen(cmp)) {
                 return true;
             }
+            continue;
         }
         index = 0;
     }
