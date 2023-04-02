@@ -87,7 +87,7 @@ static void executeCycle() {
                 }
                 break;
             }
-            
+
             // Switch between RRI instructions
             switch (mbr & 0b0000111111111111) {
                 case 0b100000000000:
@@ -193,5 +193,6 @@ void emulate(bool step) {
 
 void toggleMachineState() {
     s = !s;
+    printf("\nThe machine is now: %s", s ? "ON" : "OFF");
     return;
 }
