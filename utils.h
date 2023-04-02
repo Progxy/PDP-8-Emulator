@@ -2,7 +2,6 @@
 
 #ifndef UTILS_H
 #define UTILS_H
-#endif
 
 typedef int bool;
 typedef short word;
@@ -67,3 +66,5 @@ word strToHex(char* str, int len);
 /// @param len 
 /// @return Return the int value.
 word parseInt(char* str, int len);
+
+#endif

@@ -2,8 +2,6 @@
 
 #ifndef COMPILER_H
 #define COMPILER_H
-#endif
-
 
 #include "utils.h"
 
@@ -18,3 +16,5 @@ word pc;
 /// @param filePath 
 /// @return Return the compilation result.
 char* compileFile(char* filePath);
+
+#endif

@@ -2,7 +2,6 @@
 
 #ifndef EMULATOR_H
 #define EMULATOR_H
-#endif
 
 #include "utils.h"
 
@@ -19,3 +18,5 @@ void emulate(bool step);
 
 /// @brief Set on or off the machine.
 void toggleMachineState();
+
+#endif

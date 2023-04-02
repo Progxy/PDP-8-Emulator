@@ -2,7 +2,6 @@
 
 #ifndef ISA_H
 #define ISA_H
-#endif
 
 #include "utils.h"
 
@@ -72,3 +71,5 @@ void hltInstruction();
 void inpInstruction();
 
 void outInstruction();
+
+#endif
