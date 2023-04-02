@@ -5,6 +5,13 @@
 #include "compiler.h"
 #include "isa.h"
 
+word ram[4096];
+word* lcTable;
+word lc;
+int lcIndex;
+int linesCount;
+word pc;
+
 /* DECLARATION OF THE INTERNAL FUNCTIONS */
 
 /// @brief Check if the given string is an instruction, and if it does save the instruction in the ram.

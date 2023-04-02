@@ -7,6 +7,14 @@
 #include "isa.h"
 
 static int cycle = 0;
+extern word ram[4096];
+extern word pc;
+word ac = 0;
+word mbr = 0;
+byte opr = 0;
+byte e = 0;
+byte i = 0;
+byte s = 0;
 
 static void fetchCycle() {
     // Read the instruction from the memory

@@ -4,6 +4,18 @@
 #include "compiler.h"
 #include "emulator.h"
 
+extern word ram[4096];
+extern word* lcTable;
+extern word lc;
+extern int lcIndex;
+extern word pc;
+extern word ac;
+extern word mbr;
+extern byte opr;
+extern byte e;
+extern byte i;
+extern byte s;
+
 /// @brief Resolve the label that there's in the given string.
 /// @param str 
 /// @param index 
