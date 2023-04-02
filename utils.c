@@ -7,7 +7,7 @@ void printBits(long long val, int limit) {
     if (limit == -1) {
         return;
     }
-    printf("%d", (char) (val >> limit) & 0b01);
+    printf("%d%s", (char) (val >> limit) & 0b01, (limit % 8) ? "" : " ");
     return printBits(val, limit - 1);
 }
 

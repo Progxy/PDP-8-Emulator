@@ -167,19 +167,19 @@ static void executeCycle() {
 /// @brief Print the content of every register.
 static void printMachineInfo() {
     printf("\n------------------- REGISTERS INFO -------------------\n");
-    printf("\nPC register: ");
+    printf("\nPC register:  ");
     printBits(pc, getBitSize(pc));
-    printf("\nAC register: ");
+    printf("\nAC register:  ");
     printBits(ac, getBitSize(ac));
     printf("\nMBR register: ");
     printBits(mbr, getBitSize(mbr));
-    printf("\nOPR register: ");
+    printf("\nOPR register:          ");
     printBits(opr, getBitSize(opr));
-    printf("\nE register: ");
+    printf("\nE register:            ");
     printBits(e, getBitSize(e));
-    printf("\nI register: ");
+    printf("\nI register:            ");
     printBits(i, getBitSize(i));
-    printf("\nS register: ");
+    printf("\nS register:            ");
     printBits(s, getBitSize(s));
     printf("\nCurrent cycle: %s", cyclesNames[currentCycle]);
     if (currentCycle == 2) {
