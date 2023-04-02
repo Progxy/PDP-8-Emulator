@@ -263,7 +263,6 @@ void emulate() {
                 printf("\nEntering the fetch cycle!");
             }
             fetchCycle();
-            cycle++;
             break;
         
         case 1:
@@ -271,7 +270,6 @@ void emulate() {
                 printf("\nEntering the IMA cycle!");
             }
             IMACycle();
-            cycle++;
             break;        
             
         case 2:
@@ -279,7 +277,6 @@ void emulate() {
                 printf("\nEntering the execute cycle!");
             }
             executeCycle();
-            cycle++;
             break;        
     }
 
