@@ -121,7 +121,6 @@ static char** readFile(char* filePath) {
             while (fgetc(file) != '\n');
             charIndex = 0;
             str = (char*) calloc(1, sizeof(char));
-            linesCount++;
             continue;
         } else if (tmp == '/') {
             // Read till the end of the line
@@ -132,7 +131,6 @@ static char** readFile(char* filePath) {
             data = (char**) realloc(data, sizeof(char*) * (strIndex + 1));
             charIndex = 0;
             str = (char*) calloc(1, sizeof(char));
-            linesCount++;
             continue;
         }
 
@@ -155,7 +153,7 @@ static char** readFile(char* filePath) {
 
     // Read the part between the last newline and the EOF
     data[strIndex] = str;
-    linesCount += strIndex + 1;
+    linesCount = strIndex + 1;
     
     // Dispose the resources
     fclose(file);
