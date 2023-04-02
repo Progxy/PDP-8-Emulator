@@ -259,7 +259,7 @@ bool isPseudoInstruction(char* str) {
 
 void andInstruction() {
     // MAR <-- MBR(ADDR)
-    word mar = mbr && 0b0111111111111;
+    word mar = mbr & 0b0111111111111;
     
     // MBR <-- M
     mbr = ram[mar];
@@ -272,7 +272,7 @@ void andInstruction() {
 
 void addInstruction() {
     // MAR <-- MBR(ADDR)
-    word mar = mbr && 0b0111111111111;
+    word mar = mbr & 0b0111111111111;
     
     // MBR <-- M
     mbr = ram[mar];
@@ -289,8 +289,8 @@ void addInstruction() {
 
 void ldaInstruction() {
     // MAR <-- MBR(ADDR)
-    word mar = mbr && 0b0111111111111;
-    
+    word mar = mbr & 0b0111111111111;
+
     // MBR <-- M
     mbr = ram[mar];
 
@@ -302,7 +302,7 @@ void ldaInstruction() {
 
 void staInstruction() {
     // MAR <-- MBR(ADDR)
-    word mar = mbr && 0b0111111111111;
+    word mar = mbr & 0b0111111111111;
     
     // MBR <-- AC
     ram[mar] = ac;
@@ -312,18 +312,18 @@ void staInstruction() {
 
 void bunInstruction() {
     // PC <-- MBR(ADDR)
-    pc = mbr && 0b0111111111111;
+    pc = mbr & 0b0111111111111;
     return;
 }
 
 void bsaInstruction() {
     // MAR <-- MBR(ADDR)
-    word mar = mbr && 0b0111111111111;
+    word mar = mbr & 0b0111111111111;
     
     word temp = pc;
 
     // PC <-- MBR(ADDR)
-    pc = mbr && 0b0111111111111;
+    pc = mbr & 0b0111111111111;
 
     // MBR(ADDR) <-- PC
     mbr = temp;
@@ -339,7 +339,7 @@ void bsaInstruction() {
 
 void iszInstruction() {
     // MAR <-- MBR(ADDR)
-    word mar = mbr && 0b0111111111111;
+    word mar = mbr & 0b0111111111111;
     
     // MBR <-- M
     mbr = ram[mar];
