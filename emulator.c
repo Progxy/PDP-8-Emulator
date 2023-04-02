@@ -183,7 +183,7 @@ static void printMachineInfo() {
     if (cycle == 2) {
         printf(" - (%s%s%s Instruction)", mriNames[(int) opr], (opr == 7 && !i) ? rriNames[logaritm(mbr & 0b0000111111111111)] : "", (opr == 7 && i) ? ioNames[logaritm(mbr & 0b0000111111111111) - 10] : "");
     }
-    printf("\n------------------------------------------------------\n");
+    printf("\n\n------------------------------------------------------\n");
     return;
 }
 
