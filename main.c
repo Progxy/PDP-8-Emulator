@@ -38,6 +38,10 @@ int main(int argc, char** argv) {
 
     if (argc == 3) {
         step = !strcmp(argv[2], "-step");
+        // Check the compile only flag
+        if (!strcmp(argv[2], "-c")) {
+            return 0;
+        }
     }
 
     // Turn on the machine

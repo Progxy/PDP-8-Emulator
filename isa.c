@@ -21,21 +21,26 @@ extern byte s;
 /// @param index 
 /// @return Return the address of the label.
 static word resolveLabel(char* str, int index) {
-    char label[5];
+    char label[4];
     int j = 0;
 
-    for (int i = index + 1; (str[i] != '\0') && (j < 3) && (str[i] != ' '); i++) {
+    for (int i = index + 2; (str[i] != '\0') && (j < 3) && (str[i] != ' '); i++) {
         label[j] = str[i];
         j++;
     }
 
+    printf("\nCurrently found label: %s, len: %d", label, j);
+
     // Format the label to match the structure of the labels stored
     formatLabel(label, j);
+    printf("\nCurrently formatted label: %s.", label);
     int val = 0;
 
+    // Set the address using the label table
     for (int i = 0; i < lcIndex; i+=3) {
         int storedLabel = (lcTable[i] << 16) | lcTable[i + 1];
-        if (compareLabels(storedLabel, label)) {
+        int currentLabel = (label[0] << 24) | (label[1] << 16) | (label[2] << 8) | label[3];
+        if (currentLabel == storedLabel) {
             val = lcTable[i + 2];
             break;
         }
@@ -52,8 +57,21 @@ bool isISA(char* str) {
 
     // Check if is a label
     if (contains(str, ',')) {
-        lcTable[lcIndex] = (str[0] << 8) | str[1];
-        lcTable[lcIndex + 1] = (str[2] << 8) | str[3];
+        // Format the given label
+        int tableSymbol = 0;
+        bool isLabelTerminated = false;
+        for (int i = 0; i < 4; i++) {
+            char temp = str[i];
+            if (isLabelTerminated) {
+                temp = ' ';
+            } else if (str[i] == ',') {
+                isLabelTerminated = true;
+            }
+            tableSymbol |= temp << (24 - (i * 8));
+        }
+
+        lcTable[lcIndex] = tableSymbol >> 16;
+        lcTable[lcIndex + 1] = tableSymbol;
         lcTable[lcIndex + 2] = lc;
         lcIndex += 3;
         lcTable = (word*) realloc(lcTable, sizeof(word) * (lcIndex + 1));
@@ -101,27 +119,27 @@ bool isMRI(char* str) {
         // Set the OPR to 001
         instruction |= (0b001 << 12);
     } else if ((index = startsWith(str, "LDA"))) {
-        // Set the OPR to 001
+        // Set the OPR to 010
         instruction |= (0b010 << 12);
     } else if ((index = startsWith(str, "STA"))) {
-        // Set the OPR to 001
-        instruction |= (0b010 << 12);
+        // Set the OPR to 011
+        instruction |= (0b011 << 12);
     } else if ((index = startsWith(str, "BUN"))) {
-        // Set the OPR to 001
-        instruction |= (0b010 << 12);
+        // Set the OPR to 100
+        instruction |= (0b100 << 12);
     } else if ((index = startsWith(str, "BSA"))) {
-        // Set the OPR to 001
-        instruction |= (0b010 << 12);
+        // Set the OPR to 101
+        instruction |= (0b101 << 12);
     } else if ((index = startsWith(str, "ISZ"))) {
-        // Set the OPR to 001
-        instruction |= (0b010 << 12);
+        // Set the OPR to 110
+        instruction |= (0b110 << 12);
     } else {
         return false;
     }
-    
+
     // Resolve the label once you've known the label position
-    instruction = resolveLabel(str, index);
-    
+    instruction |= resolveLabel(str, index);
+
     // Save the instruction into the RAM and increment the lc
     ram[lc] = instruction;
     lc++;
@@ -196,7 +214,7 @@ bool isPseudoInstruction(char* str) {
     int index = 0;
 
     if ((index = startsWith(str, "ORG"))) {
-        char hexVal[7];
+        char hexVal[4];
         int j = 0;
 
         // Read the hex value
@@ -213,7 +231,7 @@ bool isPseudoInstruction(char* str) {
         int j = 0;
 
         // Read the dec value
-        for (int i = index + 1; str[i] != '\0'; i++) {
+        for (int i = index + 1; str[i] != '\0' && (i < 7); i++) {
             val[j] = str[i];
             j++;
         }
@@ -226,7 +244,7 @@ bool isPseudoInstruction(char* str) {
         char hex[7];
         int j = 0;
 
-        for (int i = index + 1; str[i] != '\0'; i++) {
+        for (int i = index + 1; str[i] != '\0' && (i < 7); i++) {
             hex[j] = str[i];
             j++;
         }

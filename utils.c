@@ -53,7 +53,7 @@ bool compareLabels(int label, char* str) {
 
 void formatLabel(char* str, int len) {
     str[len] = ',';
-    for (int i = len + 1; len < 4; i++) {
+    for (int i = len + 1; i < 4; i++) {
         str[i] = ' ';
     }
     return;
