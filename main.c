@@ -4,6 +4,8 @@
 #include "emulator.h"
 #include "utils.h"
 
+bool step = false;
+
 bool isAValidFile(char* file) {
     char* fileExt = strchr(file, '.');
     if (fileExt == NULL) {
@@ -34,8 +36,6 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    bool step = false;
-
     if (argc == 3) {
         step = !strcmp(argv[2], "-step");
     }
@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
     toggleMachineState();
 
     // Start emulating the program loaded into the RAM
-    emulate(step);
+    emulate();
 
     toggleMachineState();
 

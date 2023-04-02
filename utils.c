@@ -3,6 +3,14 @@
 #include <string.h>
 #include "utils.h"
 
+void printBits(long long val, int limit) {
+    if (limit == -1) {
+        return;
+    }
+    printf("%d", (char) (val >> limit) & 0b01);
+    return printBits(val, limit - 1);
+}
+
 void cleanStdin() {
     unsigned char c;
 

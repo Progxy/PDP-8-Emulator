@@ -7,6 +7,12 @@ typedef char byte;
 #define true 1;
 #define min(a,b) (a <= b ? a : b)
 #define isAHexValue(c) (((c >= 65) && (c <= 70)) || ((c >= 97) && (c <= 102)) ||((c >= 48) && (c <= 57)))
+#define getBitSize(val) ((sizeof(val) * 8) - 1)
+
+/// @brief Print the given value as a binary string.
+/// @param val 
+/// @param limit 
+void printBits(long long val, int limit);
 
 /// @brief Ask if the user wants to continue.
 void askContinue(char* str);
