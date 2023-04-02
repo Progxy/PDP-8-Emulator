@@ -157,7 +157,7 @@ word strToHex(char* str, int len) {
         posExp /= 16;
     }
 
-    hex = isNegative ? -1 : 1;
+    hex *= isNegative ? -1 : 1;
 
     return hex;
 }
