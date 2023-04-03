@@ -116,13 +116,13 @@ static char** readFile(char* filePath) {
         char tmp = fgetc(file);
 
         // Check if is a comment, and if uses all the line or is at the end of an instruction
-        if ((tmp == '/') && (!charIndex)) {
+        if (((tmp == '/') || (tmp == ';') || (tmp == '#')) && (!charIndex)) {
             // Read till the end of the line
             while (fgetc(file) != '\n');
             charIndex = 0;
             str = (char*) calloc(1, sizeof(char));
             continue;
-        } else if (tmp == '/') {
+        } else if ((tmp == '/') || (tmp == ';') || (tmp == '#')) {
             // Read till the end of the line
             while (fgetc(file) != '\n');
             str[charIndex] = '\0';
