@@ -12,6 +12,11 @@ typedef char byte;
 #define getBitSize(val) ((sizeof(val) * 8) - 1)
 #define endsWith(str, c) (str[strlen(str) - 1] == c)
 
+/// @brief Trim the given string.
+/// @param str 
+/// @return Return the len of the string if starts with a whitespace, otherwise return 0.
+void trimString(char* str);
+
 /// @brief Calculate the log of the given value in base 2.
 /// @param val 
 /// @return Return the log of the given value in base 2.

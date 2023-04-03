@@ -3,6 +3,34 @@
 #include <string.h>
 #include "utils.h"
 
+void trimString(char* str) {
+    // Find the number of whitespaces
+    int index = 0;
+    while (str[index] == ' ') {
+        index++;
+    }
+
+    // Check if the string doesn't start with whitespaces
+    if (!index) {
+        return;
+    }
+
+    // Shift all the non-whitespaces to the start of the string
+    int j = 0;
+    for (int i = index; str[i] != '\0'; i++) {
+        str[j] = str[i];
+        j++;
+    }
+
+    // Add the string terminator character
+    str[j] = '\0';
+    j++;
+
+    // Realloc the size of the given string
+    str = (char*) realloc(str, sizeof(char) * j);
+    return;
+}
+
 void printBits(long long val, int limit) {
     if (limit == -1) {
         return;

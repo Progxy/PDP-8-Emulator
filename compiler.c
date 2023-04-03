@@ -141,6 +141,8 @@ static char** readFile(char* filePath) {
         // Check if the string is ended
         if (tmp == '\n') {
             str[charIndex] = '\0';
+            // Trim the string
+            trimString(str);
             data[strIndex] = str;
             strIndex++;
             data = (char**) realloc(data, sizeof(char*) * (strIndex + 1));
@@ -155,6 +157,9 @@ static char** readFile(char* filePath) {
         str = (char*) realloc(str, sizeof(char) * (charIndex + 1));
     }
 
+    // Trim the string
+    trimString(str);
+    
     // Read the part between the last newline and the EOF
     data[strIndex] = str;
     linesCount = strIndex + 1;
