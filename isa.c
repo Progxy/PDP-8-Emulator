@@ -33,12 +33,12 @@ static word resolveLabel(char* str, int index) {
     // Format the label to match the structure of the labels stored
     formatLabel(label, j);
     int val = -1;
+    int evaluatedLabel = (label[0] << 24) | (label[1] << 16) | (label[2] << 8) | label[3];
 
     // Set the address using the label table
     for (int i = 0; i < lcIndex; i += 3) {
         int storedLabel = (lcTable[i] << 16) | lcTable[i + 1];
-        int currentLabel = (label[0] << 24) | (label[1] << 16) | (label[2] << 8) | label[3];
-        if (currentLabel == storedLabel) {
+        if (evaluatedLabel == storedLabel) {
             val = lcTable[i + 2];
             break;
         }

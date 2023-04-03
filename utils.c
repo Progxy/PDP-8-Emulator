@@ -3,7 +3,7 @@
 #include <string.h>
 #include "utils.h"
 
-void trimString(char* str) {
+char* trimString(char* str) {
     // Find the number of whitespaces
     int index = 0;
     while (str[index] == ' ') {
@@ -12,23 +12,25 @@ void trimString(char* str) {
 
     // Check if the string doesn't start with whitespaces
     if (!index) {
-        return;
+        return str;
     }
 
     // Shift all the non-whitespaces to the start of the string
     int j = 0;
+    char* newString = (char*) calloc(1, sizeof(char));
     for (int i = index; str[i] != '\0'; i++) {
-        str[j] = str[i];
+        newString[j] = str[i];
         j++;
+        newString = (char*) realloc(newString, sizeof(char) * (j + 1));
     }
 
     // Add the string terminator character
-    str[j] = '\0';
-    j++;
+    newString[j] = '\0';
 
-    // Realloc the size of the given string
-    str = (char*) realloc(str, sizeof(char) * j);
-    return;
+    // Free the given string
+    free(str);
+
+    return newString;
 }
 
 void printBits(long long val, int limit) {

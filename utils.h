@@ -14,8 +14,8 @@ typedef char byte;
 
 /// @brief Trim the given string.
 /// @param str 
-/// @return Return the len of the string if starts with a whitespace, otherwise return 0.
-void trimString(char* str);
+/// @return Return the new string otherwise return the old string.
+char* trimString(char* str);
 
 /// @brief Calculate the log of the given value in base 2.
 /// @param val 

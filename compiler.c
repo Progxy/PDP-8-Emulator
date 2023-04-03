@@ -77,7 +77,7 @@ static bool isInstruction(char* str, int currentLine) {
     // Check if is a MRI instruction
     if (isMRI(str)) {
         if (errorFlag) {
-            printf("\nError: Unresolved symbol at line %d!", currentLine);
+            printf("\nError: Unresolved symbol at line %d!", currentLine + 1);
         }
         return false;
     }
@@ -142,12 +142,15 @@ static char** readFile(char* filePath) {
         if (tmp == '\n') {
             str[charIndex] = '\0';
             // Trim the string
-            trimString(str);
-            data[strIndex] = str;
+            data[strIndex] = trimString(str);
+            str = (char*) calloc(1, sizeof(char));
+            charIndex = 0;
             strIndex++;
             data = (char**) realloc(data, sizeof(char*) * (strIndex + 1));
-            charIndex = 0;
-            str = (char*) calloc(1, sizeof(char));
+            // Check if the parser reached the END pseudo instruction
+            if (startsWith(data[strIndex - 1],"END")) {
+                break;
+            }
             continue;
         }
 
@@ -157,13 +160,10 @@ static char** readFile(char* filePath) {
         str = (char*) realloc(str, sizeof(char) * (charIndex + 1));
     }
 
-    // Trim the string
-    trimString(str);
-    
     // Read the part between the last newline and the EOF
-    data[strIndex] = str;
+    data[strIndex] = trimString(str);
     linesCount = strIndex + 1;
-    
+
     // Dispose the resources
     fclose(file);
 
