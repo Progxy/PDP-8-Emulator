@@ -119,6 +119,10 @@ static char** readFile(char* filePath) {
         if (((tmp == '/') || (tmp == ';') || (tmp == '#')) && (!charIndex)) {
             // Read till the end of the line
             while (fgetc(file) != '\n');
+            str[charIndex] = '\0';
+            data[strIndex] = str;
+            strIndex++;
+            data = (char**) realloc(data, sizeof(char*) * (strIndex + 1));
             charIndex = 0;
             str = (char*) calloc(1, sizeof(char));
             continue;
