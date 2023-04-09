@@ -1,5 +1,4 @@
 // Decremento Iterativo
-
 ORG 100
 STR, LDA IN
 STA TMP
@@ -18,10 +17,10 @@ STA TMP
 BUN LOP
 
 // Init variables
-    ORG 300
-    IN, DEC 75
-    M1, DEC -1
-    CNT, DEC -11
-    TMP, DEC 0
+ORG 300
+IN, DEC 75
+M1, DEC -1
+CNT, DEC -11
+TMP, DEC 0
 
 END
