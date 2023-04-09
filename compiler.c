@@ -45,6 +45,11 @@ char* compileFile(char* filePath) {
         return "ERR";
     }
 
+    // Clean the RAM
+    for (int i = 0; i < 4096; i++) {
+        ram[i] = 0;
+    }
+
     // First step of the assembler
     resolveSymbols(data);
 
