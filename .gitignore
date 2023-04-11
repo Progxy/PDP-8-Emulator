@@ -1,3 +1,4 @@
 # Ignore the .exe and .s files
 *.exe
 *.s
+/.vscode
