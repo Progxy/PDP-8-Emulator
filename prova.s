@@ -10,7 +10,7 @@ HLT
 
 // Decr subroutine
 ORG 200 ;comment
-DCR, DEC 0 #DEC 0
+DCR, DEC 0 # DEC 0
 LDA TMP
 ADD M1
 STA TMP
