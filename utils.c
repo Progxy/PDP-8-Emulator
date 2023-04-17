@@ -24,15 +24,15 @@ char* trimString(char* str) {
         index++;
     }
 
-    // Check if the string doesn't start with whitespaces
-    if (!index) {
-        return str;
+    int lastIndex = strlen(str) - 1; 
+    while(str[lastIndex] == ' ') {
+        lastIndex--;
     }
 
     // Shift all the non-whitespaces to the start of the string
     int j = 0;
     char* newString = (char*) calloc(1, sizeof(char));
-    for (int i = index; str[i] != '\0'; i++) {
+    for (int i = index; i <= lastIndex; i++) {
         newString[j] = str[i];
         j++;
         newString = (char*) realloc(newString, sizeof(char) * (j + 1));

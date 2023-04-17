@@ -239,13 +239,17 @@ bool isPseudoInstruction(char* str) {
         int j = 0;
 
         // Read the dec value
-        for (int i = index + 2; str[i] != '\0' && (j < 6); i++) {
+        int i = 0;
+        for (i = index + 2; str[i] != '\0' && (j < 6); i++) {
             val[j] = str[i];
             j++;
         }
 
         // Store the value in the ram at the current value of lc and increment the lc
         ram[lc] = parseInt(val, j);
+        // Need to dig more about it probably there's an error inside the value parser (parseInt and also parseHex probably, as you're there is better to refactor and rename them to avoid confusion)
+        printf("\nSaved dec: %s - index: %d - i: %d - ram: %d at lc:", str, index, i, ram[lc]);
+        printHex(lc, getHexSize(lc));
         lc++;
 
     } else if ((index = startsWith(str, "HEX"))) {
@@ -259,6 +263,9 @@ bool isPseudoInstruction(char* str) {
 
         // Store the value in the ram at the current value of lc and increment the lc
         ram[lc] = strToHex(hex, j);
+        hex[4] = '\0';
+        printf("\nSaved hex: %s - %d - %d at lc:", str, index, ram[lc]);
+        printHex(lc, getHexSize(lc));
         lc++;
 
     } else {
@@ -404,7 +411,7 @@ void cirInstruction() {
     
     // AC <-- E-AC(1 - 15)
     ac = ac >> 1;
-    ac |= (temp << 15);
+    ac |= ((temp & 0b01) << 15) & (0b01 << 15);
 
     return;
 }
@@ -413,7 +420,7 @@ void cilInstruction() {
     byte temp = e; 
 
     // E <-- AC(1)
-    e = (ac >> 15);
+    e = (ac >> 15) & 0b01;
 
     // AC <-- AC(2 - 16)-E
     ac = ac << 1;
