@@ -169,18 +169,25 @@ static void printMachineInfo() {
     printf("\n------------------- REGISTERS INFO -------------------\n");
     printf("\nPC register:  ");
     printBits(pc, getBitSize(pc));
+    printHex(pc, getHexSize(pc));
     printf("\nAC register:  ");
     printBits(ac, getBitSize(ac));
+    printHex(ac, getHexSize(ac));
     printf("\nMBR register: ");
     printBits(mbr, getBitSize(mbr));
+    printHex(mbr, getHexSize(mbr));
     printf("\nOPR register:          ");
     printBits(opr, getBitSize(opr));
+    printHex(opr, getHexSize(opr));
     printf("\nE register:            ");
     printBits(e, getBitSize(e));
+    printHex(e, getHexSize(e));
     printf("\nI register:            ");
     printBits(i, getBitSize(i));
+    printHex(i, getHexSize(i));
     printf("\nS register:            ");
     printBits(s, getBitSize(s));
+    printHex(s, getHexSize(s));
     printf("\nCurrent cycle: %s", cyclesNames[currentCycle]);
     if (currentCycle == 2) {
         printf(" - (%s%s%s Instruction)", mriNames[(int) opr], (opr == 7 && !i) ? rriNames[logaritm(currentInstruction)] : "", (opr == 7 && i) ? ioNames[logaritm(currentInstruction) - 10] : "");

@@ -10,7 +10,12 @@ typedef char byte;
 #define min(a,b) (a <= b ? a : b)
 #define isAHexValue(c) (((c >= 65) && (c <= 70)) || ((c >= 97) && (c <= 102)) ||((c >= 48) && (c <= 57)))
 #define getBitSize(val) ((sizeof(val) * 8) - 1)
+#define getHexSize(val) (sizeof(val) * 2)
 #define endsWith(str, c) (str[strlen(str) - 1] == c)
+
+/// @brief Print the given value using the hexadecimal notation.
+/// @param value 
+void printHex(word value, int size);
 
 /// @brief Trim the given string.
 /// @param str 

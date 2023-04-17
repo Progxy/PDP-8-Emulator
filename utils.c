@@ -3,6 +3,20 @@
 #include <string.h>
 #include "utils.h"
 
+void printHex(word value, int size) {
+    const char hexDictionary[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+    
+    // Print the hex identifier
+    printf(" 0x");
+    
+    for (int i = size - 1; i >= 0; i--) {
+        // Print the value of the last 4 bits
+        printf("%c", hexDictionary[((value >> (4 * i)) & 0b1111)]);
+    }
+
+    return;
+}
+
 char* trimString(char* str) {
     // Find the number of whitespaces
     int index = 0;
