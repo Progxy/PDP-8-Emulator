@@ -293,7 +293,7 @@ void addInstruction() {
     int temp = ac + mbr;
 
     // Extract and load the AC and the E registers content
-    e = temp >> 16;
+    e = (temp >> 16) & 0b01;
     ac = temp & 0b1111111111111111;
 
     return;
@@ -398,26 +398,26 @@ void cmeInstruction() {
 }
 
 void cirInstruction() {
-    byte temp = e;
+    byte temp = e & 0b01;
 
     // E <-- AC(16)
     e = ac & 0b01;
     
     // AC <-- E-AC(1 - 15)
-    ac = ac >> 1;
-    ac |= ((temp & 0b01) << 15) & (0b01 << 15);
+    ac = ac >> 1 & 0b0111111111111111;
+    ac |= (temp << 15) & (0b01 << 15);
 
     return;
 }
 
 void cilInstruction() {
-    byte temp = e; 
+    byte temp = e & 0b01; 
 
     // E <-- AC(1)
     e = (ac >> 15) & 0b01;
 
     // AC <-- AC(2 - 16)-E
-    ac = ac << 1;
+    ac = ac << 1 & 0b0111111111111111;
     ac |= temp;
     
     return;
@@ -425,17 +425,17 @@ void cilInstruction() {
 
 void incInstruction() {
     // E-AC <-- E-AC + 1
-    int temp = ((e << 16) & ac) + 1;
+    int temp = (((e & 0b01) << 16) & ac) + 1;
 
     // Extract and load the AC and the E registers content
-    e = temp >> 16;
+    e = (temp >> 16) & 0b01;
     ac = temp & 0b1111111111111111;
     return;
 }
 
 void spaInstruction() {
     // If AC(1) == 0, then PC <-- PC + 1
-    if ((ac >> 15) == 0) {
+    if (((ac >> 15) & 0b01) == 0) {
         pc++;
     }
     return;
@@ -443,7 +443,7 @@ void spaInstruction() {
 
 void snaInstruction() {
     // If AC(1) == 1, then PC <-- PC + 1
-    if ((ac >> 15) == 1) {
+    if (((ac >> 15) & 0b01) == 1) {
         pc++;
     }
     return;
