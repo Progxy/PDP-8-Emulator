@@ -425,7 +425,7 @@ void cilInstruction() {
 
 void incInstruction() {
     // E-AC <-- E-AC + 1
-    int temp = (((e & 0b01) << 16) & ac) + 1;
+    int temp = (((e & 0b01) << 16) | ac) + 1;
 
     // Extract and load the AC and the E registers content
     e = (temp >> 16) & 0b01;
