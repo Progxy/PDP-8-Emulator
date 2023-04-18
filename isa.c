@@ -240,32 +240,26 @@ bool isPseudoInstruction(char* str) {
 
         // Read the dec value
         int i = 0;
-        for (i = index + 2; str[i] != '\0' && (j < 6); i++) {
+        for (i = index + 2; (str[i] != ' ') && (str[i] != '\0') && (j < 6); i++) {
             val[j] = str[i];
             j++;
         }
 
         // Store the value in the ram at the current value of lc and increment the lc
         ram[lc] = parseInt(val, j);
-        // Need to dig more about it probably there's an error inside the value parser (parseInt and also parseHex probably, as you're there is better to refactor and rename them to avoid confusion)
-        printf("\nSaved dec: %s - index: %d - i: %d - ram: %d at lc:", str, index, i, ram[lc]);
-        printHex(lc, getHexSize(lc));
         lc++;
 
     } else if ((index = startsWith(str, "HEX"))) {
         char hex[5];
         int j = 0;
 
-        for (int i = index + 2; str[i] != '\0' && (j < 5); i++) {
+        for (int i = index + 2; (str[i] != ' ') && (str[i] != '\0') && (j < 5); i++) {
             hex[j] = str[i];
             j++;
         }
 
         // Store the value in the ram at the current value of lc and increment the lc
         ram[lc] = strToHex(hex, j);
-        hex[4] = '\0';
-        printf("\nSaved hex: %s - %d - %d at lc:", str, index, ram[lc]);
-        printHex(lc, getHexSize(lc));
         lc++;
 
     } else {

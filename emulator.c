@@ -51,9 +51,6 @@ static void fetchCycle() {
 static void IMACycle() {
     // MAR <-- MBR(ADDR)
     word mar = mbr & 0b0111111111111;
-    
-    printf("\nMar: %d - ", mar);
-    printBits(mar, getBitSize(mar));
 
     // MBR <-- M
     mbr = ram[mar];
