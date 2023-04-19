@@ -80,7 +80,7 @@ void analyzeInstructions() {
 
     // Print the instructions until the user wants to exit
     while (1) {
-        if (!ram[counter]) {
+        if (!ram[counter] && !ram[(counter + 1) % 4096]) {
             // Print the current instruction that is empty
             printInstructionInfo(counter);
             
@@ -93,8 +93,6 @@ void analyzeInstructions() {
             }
 
             printf("\n *\n *\n *\n Other %d lines of empty instructions\n *\n *\n *\n", emptyInstructionsCounter);
-            // Print the last empty instruction
-            printInstructionInfo(counter);
         }
 
         printInstructionInfo(counter);
