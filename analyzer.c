@@ -6,6 +6,9 @@
 
 extern word pc;
 extern word ram[4096];
+static char* mriInstructions[] = {"AND", "ADD", "LDA", "STA", "BUN", "BSA", "ISZ"};
+static char* rriInstructions[] = {"HLT", "SZE", "SZA", "SNA", "SPA", "INC", "CIL", "CIR", "CME", "CMA", "CLE", "CLA"};    
+static char* ioInstructions[] = {"OUT", "INP"};
 
 /// @brief Get the I value inside the given instruction.
 /// @param instruction 
@@ -29,11 +32,7 @@ static word getAddress(word instruction) {
 }
 
 static char* getInstruction(word instruction) {
-    const char* mriInstructions[] = {"AND", "ADD", "LDA", "STA", "BUN", "BSA", "ISZ"};
-    const char* rriInstructions[] = {"HLT", "SZE", "SZA", "SNA", "SPA", "INC", "CIL", "CIR", "CME", "CMA", "CLE", "CLA"};    
-    const char* ioInstructions[] = {"OUT", "INP"};
-
-    byte opr = getOPR(instruction); 
+    int opr = getOPR(instruction); 
 
     // If the opr value is less than 7 is an MRI instruction
     if (opr < 7) {

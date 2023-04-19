@@ -1,6 +1,6 @@
 // Decremento Iterativo
 ORG 100
-STR, LDA IN
+LDA IN
 STA TMP
 LOP, ISZ CNT
 BSA DCR
