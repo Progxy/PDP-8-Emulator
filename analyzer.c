@@ -45,36 +45,61 @@ static char* getInstruction(word instruction) {
     return getI(instruction) ? ioInstructions[index - 10] : rriInstructions[index]; 
 }
 
-static int getUserInput() {
-    char hex[5];
+static bool getUserInput() {
+    char quit;
 
-    printf("\nPress ENTER to continue to the next address, or insert a valid hexadecimal value to use as next address: ");
-    fgets(hex, 4, stdin);
+    printf("\nPress ENTER to continue, or insert Q to quit: ");
+    scanf("%c", &quit);
 
-    word hexAddress = strToHex(hex, strlen(hex));
-    cleanStdin();
+    if (quit != '\n') {
+        cleanStdin();
+    }
 
     // Delete the current line
+    printf("\033[A\r");
     printf("\33[2K\r");
 
-    return (hexAddress < 4096) ? hexAddress : -1;
+    return (quit == 'q' || quit == 'Q');
+}
+
+void printInstructionInfo(word index) {
+    printHex(index, 4);
+    printf(":  ");
+    printBits(ram[index], getBitSize(ram[index]));
+    printf("    %d      %d      %d -", getI(ram[index]), getOPR(ram[index]), getAddress(ram[index]));
+    printHex(getAddress(ram[index]), 4);
+    printf("     %s", getInstruction(ram[index]));
+    return;
 }
 
 void analyzeInstructions() {
-    printf("\n--- I --- OPR --- ADDRESS ------------ INSTRUCTION ------\n");
+    printf("\n---------    INSTRUCTION    --- I --- OPR ---   ADDRESS    --- ISA ---------\n");
     
     // Init the counter value with the value of the program counter
-    int counter = pc;
+    word counter = pc;
 
     // Print the instructions until the user wants to exit
-    while (counter == 0) {
-        printHex(counter, 4);
-        printf(": %d    %d    %d -", getI(ram[counter]), getOPR(ram[counter]), getAddress(ram[counter]));
-        printHex(getAddress(ram[counter]), 4);
-        printf("    %s\n", getInstruction(ram[counter]));
+    while (1) {
+        if (!ram[counter]) {
+            // Print the current instruction that is empty
+            printInstructionInfo(counter);
+            
+            // Get the number of empty instructions
+            int emptyInstructionsCounter = 0;
+            while (!ram[counter]) {
+                counter++;
+                counter = counter % 4096;
+                emptyInstructionsCounter++;
+            }
 
-        // Ask the user to print the next instruction or to insert a valid hexadecimal address
-        if ((counter = getUserInput()) == -1) {
+            printf("\n *\n *\n *\n Other %d lines of empty instructions\n *\n *\n *\n", emptyInstructionsCounter);
+            // Print the last empty instruction
+            printInstructionInfo(counter);
+        }
+
+        printInstructionInfo(counter);
+
+        if (getUserInput()) {
             break;
         }
 
@@ -83,6 +108,6 @@ void analyzeInstructions() {
         counter = counter % 4096;
     }
 
-    printf("\n--------------------------------\n");
+    printf("----------------------------------------------------------------------------\n");
     return;
 }
