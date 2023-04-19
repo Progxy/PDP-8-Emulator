@@ -13,6 +13,11 @@ typedef char byte;
 #define getHexSize(val) (sizeof(val) * 2)
 #define endsWith(str, c) (str[strlen(str) - 1] == c)
 
+/// @brief Verify that the given file name is valid by checking the extension (.s/.asm/.S/.pdp8).
+/// @param file 
+/// @return Return true if is valid, otherwise return false.
+bool isAValidFile(char* file);
+
 /// @brief Print the given value using the hexadecimal notation.
 /// @param value 
 void printHex(word value, int size);

@@ -36,16 +36,16 @@ static void assembleProgram(char** data);
 
 /* END OF DECLARATION */
 
-char* compileFile(char* filePath) {
+int compileFile(char* filePath) {
     char** data = readFile(filePath);
     
     // Check for errors while opening the file
     if (data == NULL) {
         printf("Error: the file can't be opened!\n");
-        return "ERR";
+        return -1;
     }
 
-    // Clean the RAM
+    // Clear the RAM
     for (int i = 0; i < 4096; i++) {
         ram[i] = 0;
     }
@@ -58,12 +58,12 @@ char* compileFile(char* filePath) {
 
     if (errorFlag) {
         printf("\nThe compilation terminated with an error!");
-        return "FAILED";
+        return -2;
     }
 
     printf("\nThe file has been compiled successfully!");
 
-    return "OK";
+    return 0;
 }
 
 /* DEFINITION OF THE INTERNAL FUNCTIONS */

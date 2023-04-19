@@ -9,7 +9,7 @@
 static int cycle = 0;
 extern word ram[4096];
 extern word pc;
-extern bool stepFlag;
+bool stepFlag;
 word ac = 0;
 word mbr = 0;
 byte opr = 0;
@@ -205,10 +205,24 @@ static void printMachineInfo() {
     return;
 }
 
+void initEmulator(bool flags) {
+    // Set the given flag
+    stepFlag = flags;
+    
+    // Turn on the machine
+    toggleMachineState();
+    
+    // Print the start of the output of the emulator
+    printf("\n------- OUTPUT: -------\n");
+
+    return;
+}
+
 void emulate() {
     // Check if the machine is on
     if (s == 0) {
         printf("\nShutting down the machine.");
+        printf("\n-----------------------\n");
         return;
     } 
     
@@ -234,7 +248,7 @@ void emulate() {
             break;        
     }
 
-    return emulate(stepFlag);
+    return emulate();
 }
 
 void toggleMachineState() {

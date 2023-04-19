@@ -3,6 +3,19 @@
 #include <string.h>
 #include "utils.h"
 
+bool isAValidFile(char* file) {
+    char* fileExt = strchr(file, '.');
+    if (fileExt == NULL) {
+        return false;
+    }
+    
+    if (!(strcmp(fileExt, ".s") || strcmp(fileExt, ".asm") || strcmp(fileExt, ".S") || strcmp(fileExt, ".pdp8"))) {
+        return true;
+    }
+
+    return false;
+}
+
 void printHex(word value, int size) {
     const char hexDictionary[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
     

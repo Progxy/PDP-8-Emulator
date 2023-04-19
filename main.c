@@ -4,21 +4,6 @@
 #include "emulator.h"
 #include "utils.h"
 
-bool stepFlag = false;
-
-bool isAValidFile(char* file) {
-    char* fileExt = strchr(file, '.');
-    if (fileExt == NULL) {
-        return false;
-    }
-    
-    if (!(strcmp(fileExt, ".s") || strcmp(fileExt, ".asm") || strcmp(fileExt, ".S") || strcmp(fileExt, ".pdp8"))) {
-        return true;
-    }
-
-    return false;
-}
-
 int main(int argc, char** argv) {
     if (argc == 1) {
         printf("Error: you must include an assembly file (.s)!");
@@ -30,31 +15,28 @@ int main(int argc, char** argv) {
 
     char* filePath = argv[1];
 
-    char* infoCompile = compileFile(filePath);
-
     // Check the status of the compilation
-    if (strcmp(infoCompile, "OK")) {
+    if (compileFile(filePath)) {
         return -1;
     }
 
+    bool flag = false;
+
     // Check for extra flags
     if (argc == 3) {
-        stepFlag = !strcmp(argv[2], "-step");
         // Check the compile only flag
         if (!strcmp(argv[2], "-c")) {
             return 0;
         }
+    
+        flag = !strcmp(argv[2], "-step");
     }
 
-    // Turn on the machine
-    toggleMachineState();
-
-    printf("\n------- OUTPUT: -------\n");
+    // Init emulator
+    initEmulator(flag);
 
     // Start emulating the program loaded into the RAM
     emulate();
-
-    printf("\n-----------------------\n");
 
     return 0;
 }

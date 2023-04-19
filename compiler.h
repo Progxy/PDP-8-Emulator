@@ -5,5 +5,5 @@
 /// @brief Compile the given file.
 /// @param filePath 
 /// @return Return the compilation result.
-char* compileFile(char* filePath);
+int compileFile(char* filePath);
 
