@@ -5,7 +5,7 @@ OBJS = main.c
 CC = gcc
 
 # Headers files
-HEADERS = compiler.c isa.c utils.c emulator.c
+HEADERS = compiler.c isa.c utils.c emulator.c analyzer.c
 
 # COMPILER_FLAGS specifies the additional compilation options we're using
 COMPILER_FLAGS = -std=c11 -Wall

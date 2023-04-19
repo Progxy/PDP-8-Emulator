@@ -112,7 +112,6 @@ void formatLabel(char* str, int len) {
     return;
 }
 
-
 bool contains(char* str, char c) {
     for (int i = 0; (str[i] != '\0'); i++) {
         if (str[i] == c) {

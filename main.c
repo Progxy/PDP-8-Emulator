@@ -3,6 +3,7 @@
 #include "compiler.h"
 #include "emulator.h"
 #include "utils.h"
+#include "analyzer.h"
 
 int main(int argc, char** argv) {
     if (argc == 1) {
@@ -26,6 +27,8 @@ int main(int argc, char** argv) {
     if (argc == 3) {
         // Check the compile only flag
         if (!strcmp(argv[2], "-c")) {
+            // Let the user analyze the compiled program
+            analyzeInstructions();
             return 0;
         }
     
