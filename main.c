@@ -12,7 +12,7 @@ bool isAValidFile(char* file) {
         return false;
     }
     
-    if (!strcmp(fileExt, ".s")) {
+    if (!(strcmp(fileExt, ".s") || strcmp(fileExt, ".asm") || strcmp(fileExt, ".S") || strcmp(fileExt, ".pdp8"))) {
         return true;
     }
 
