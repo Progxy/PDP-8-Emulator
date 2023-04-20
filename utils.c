@@ -3,6 +3,23 @@
 #include <string.h>
 #include "utils.h"
 
+static char hexDictionary[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+
+char* getFileName(char* fullFileName) {
+    char* fileName = (char*) calloc(1, sizeof(char));
+    int fileNameLength = 1;
+
+    for (int i = 0; fullFileName[i] != '.'; i++) {
+        fileName[i] = fullFileName[i];
+        fileNameLength++;
+        fileName = (char*) realloc(fileName, fileNameLength);
+    }
+
+    fileName[fileNameLength - 1] = '\0';
+
+    return fileName;
+}
+
 bool* getFlags(int argc, char** argv) {
     // Flags: {VALID_ARGC, HELP_FLAG, COMPILE_FLAG, DUMP_FLAG, DUMP_OUT, STEP_FLAG}
     bool* flags = (bool*) calloc(6, sizeof(bool));
@@ -40,17 +57,54 @@ bool isAValidFile(char* file) {
 }
 
 void printHex(word value, int size) {
-    const char hexDictionary[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-    
     // Print the hex identifier
     printf(" 0x");
     
     for (int i = size - 1; i >= 0; i--) {
-        // Print the value of the last 4 bits
         printf("%c", hexDictionary[((value >> (4 * i)) & 0b1111)]);
     }
 
     return;
+}
+
+char* convertToBits(word value, int limit) {
+    // Rewrite this function by adding character by character and not using the strcat
+    char* bitsString = (char*) calloc(3, sizeof(char));
+
+    while (limit != -1) {
+        // Store the current bit
+        char* temp = (char*) calloc(3, sizeof(char));
+        int tempLen = sprintf(temp, "%d%s", (char) (value >> limit) & 0b01, (limit % 8) ? "" : " ");
+        temp = (char*) realloc(temp, tempLen + 1);
+
+        // Add the current bit to the binary string
+        strcat(bitsString, temp);
+        
+        // Free the temp variable and decrement the counter
+        free(temp);
+        limit--;
+    }
+
+    return bitsString;
+} 
+
+char* convertToHex(word value, int size) {
+    // Print the hex identifier
+    char* hexString = (char*) calloc(4, sizeof(char));
+    strcat(hexString, " 0x");
+    int hexStringLength = strlen(hexString) + 1;
+    hexString = (char*) realloc(hexString, hexStringLength + size);
+
+    // Add each value to the hex string
+    for (int i = size - 1; i >= 0; i--) {
+        hexString[hexStringLength - 1] = hexDictionary[((value >> (4 * i)) & 0b1111)];
+        hexStringLength++;
+    }
+
+    // Add the string terminator character
+    hexString[hexStringLength - 1] = '\0';
+
+    return hexString;
 }
 
 char* trimString(char* str) {

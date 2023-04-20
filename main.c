@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
         return 0;
     } else if (flags[3]) {
         // Dump the instructions compiled inside a txt file, pass the DUMP_OUT flag to check if the user gave a filename for the output file
-        dumpInstructions(flags[4]);
+        dumpInstructions(flags[4], argv);
         return 0;
     }
 

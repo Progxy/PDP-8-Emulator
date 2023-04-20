@@ -13,6 +13,23 @@ typedef char byte;
 #define getHexSize(val) (sizeof(val) * 2)
 #define endsWith(str, c) (str[strlen(str) - 1] == c)
 
+/// @brief Convert the given value into a binary string.
+/// @param value 
+/// @param limit 
+/// @return Return the given value as a binary string.
+char* convertToBits(word value, int limit);
+
+/// @brief Convert the given value using the hexadecimal notation.
+/// @param value 
+/// @param size 
+/// @return Return the given value using the hexadecimal notation.
+char* convertToHex(word value, int size);
+
+/// @brief Find the filename by cutting off the file extension.
+/// @param fullFileName 
+/// @return Return the filename from the given full file name.
+char* getFileName(char* fullFileName);
+
 /// @brief Search all the flags inside the command.
 /// @param argc 
 /// @param argv 

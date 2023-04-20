@@ -4,4 +4,4 @@
 void analyzeInstructions();
 
 /// @brief Dump all the instructions inside a txt file.
-void dumpInstructions(bool dumpOut);
+void dumpInstructions(bool dumpOut, char** argv);
