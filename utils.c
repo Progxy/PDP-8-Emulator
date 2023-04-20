@@ -82,16 +82,21 @@ void cleanStdin() {
 
 void askContinue(char* str) {
     // Print the given text
-    printf("\n%s", str);
+    printf("%s", str);
     
     // Prompt the user
     char confirm;
     scanf("%c", &confirm);
 
+    // Delete the current line
+    printf("\033[A\r");
+    printf("\33[2K\r");
+
     // Clean the stdin if the user inputs something else than '\n'
     if (confirm != '\n') {
         return cleanStdin();
     }
+    
     return;
 }
 

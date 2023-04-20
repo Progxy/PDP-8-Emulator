@@ -6,9 +6,9 @@
 
 extern word pc;
 extern word ram[4096];
-static char* mriInstructions[] = {"AND", "ADD", "LDA", "STA", "BUN", "BSA", "ISZ"};
-static char* rriInstructions[] = {"HLT", "SZE", "SZA", "SNA", "SPA", "INC", "CIL", "CIR", "CME", "CMA", "CLE", "CLA"};    
-static char* ioInstructions[] = {"OUT", "INP"};
+char* mriInstructions[] = {"AND", "ADD", "LDA", "STA", "BUN", "BSA", "ISZ", ""};
+char* rriInstructions[] = {"HLT", "SZE", "SZA", "SNA", "SPA", "INC", "CIL", "CIR", "CME", "CMA", "CLE", "CLA", ""};    
+char* ioInstructions[] = {"OUT", "INP", ""};
 
 /// @brief Get the I value inside the given instruction.
 /// @param instruction 
@@ -62,7 +62,9 @@ static bool getUserInput() {
     return (quit == 'q' || quit == 'Q');
 }
 
-void printInstructionInfo(word index) {
+/// @brief Print the info of the instruction at the given index.
+/// @param index 
+static void printInstructionInfo(word index) {
     printHex(index, 4);
     printf(":  ");
     printBits(ram[index], getBitSize(ram[index]));

@@ -16,10 +16,10 @@ byte opr = 0;
 byte e = 0;
 byte i = 0;
 byte s = 0;
+extern char* mriInstructions[];
+extern char* rriInstructions[];    
+extern char* ioInstructions[];
 static const char* cyclesNames[] = {"FETCH", "IMA", "EXECUTE", "-"};
-static const char* mriNames[] = {"AND", "ADD", "LDA", "STA", "BUN", "BSA", "ISZ", ""};
-static const char* rriNames[] = {"HLT", "SZE", "SZA", "SNA", "SPA", "INC", "CIL", "CIR", "CME", "CMA", "CLE", "CLA"};
-static const char* ioNames[] = {"OUT", "INP"};
 static int currentCycle = 3;
 static int currentInstruction = 0;
 
@@ -190,13 +190,13 @@ static void printMachineInfo() {
     printHex(s, getHexSize(s));
     printf("\nCurrent cycle: %s", cyclesNames[currentCycle]);
     if (currentCycle == 2) {
-        printf(" - (%s%s%s Instruction)", mriNames[(int) opr], (opr == 7 && !i) ? rriNames[logaritm(currentInstruction)] : "", (opr == 7 && i) ? ioNames[logaritm(currentInstruction) - 10] : "");
+        printf(" - (%s%s%s Instruction)", mriInstructions[(int) opr], (opr == 7 && !i) ? rriInstructions[logaritm(currentInstruction)] : "", (opr == 7 && i) ? ioInstructions[logaritm(currentInstruction) - 10] : "");
     }
     printf("\nNext cycle: %s", cyclesNames[cycle]);
     if (cycle == 2) {
-        printf(" - (%s%s%s Instruction)", mriNames[(int) opr], (opr == 7 && !i) ? rriNames[logaritm(mbr & 0b0000111111111111)] : "", (opr == 7 && i) ? ioNames[logaritm(mbr & 0b0000111111111111) - 10] : "");
+        printf(" - (%s%s%s Instruction)", mriInstructions[(int) opr], (opr == 7 && !i) ? rriInstructions[logaritm(mbr & 0b0000111111111111)] : "", (opr == 7 && i) ? ioInstructions[logaritm(mbr & 0b0000111111111111) - 10] : "");
     }
-    printf("\n\n------------------------------------------------------\n");
+    printf("\n------------------------------------------------------\n");
 
     // Update currentCycle and currentInstruction
     currentCycle = cycle;
@@ -230,7 +230,6 @@ void emulate() {
     if (stepFlag) {
         printMachineInfo();
         askContinue("Press ENTER to step to the next instruction: ");
-        printf("\n");
     }
 
     // Switch between the four cycles
