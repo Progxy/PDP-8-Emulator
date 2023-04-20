@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "compiler.h"
 #include "emulator.h"
@@ -6,10 +7,18 @@
 #include "analyzer.h"
 
 int main(int argc, char** argv) {
-    if (argc == 1) {
-        printf("Error: you must include an assembly file (.s)!");
+    bool* flags = getFlags(argc, argv);
+    if (!flags[0]) {
+        printf("Error: you must include an assembly file (.s/.asm/.S/.pdp8)!");
         return -1;
-    } else if (!isAValidFile(argv[1])) {
+    } else if (flags[1]) {
+        // Check for the help flag
+        printHelpInfo();
+        return 0;
+    } 
+    
+    // Check if the given file extension is valid
+    if (!isAValidFile(argv[1])) {
         printf("\nError: invalid type of file, you must include an assembly file (.s, .asm, .S, .pdp8)!");
         return -1;
     }
@@ -21,25 +30,24 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    bool flag = false;
-
-    // Check for extra flags
-    if (argc == 3) {
-        // Check the compile only flag
-        if (!strcmp(argv[2], "-c")) {
-            // Let the user analyze the compiled program
-            analyzeInstructions();
-            return 0;
-        }
-    
-        flag = !strcmp(argv[2], "-step");
+    if (flags[2]) {
+        // Analyze the instructions after the compilation of the given file
+        analyzeInstructions();
+        return 0;
+    } else if (flags[3]) {
+        // Dump the instructions compiled inside a txt file, pass the DUMP_OUT flag to check if the user gave a filename for the output file
+        dumpInstructions(flags[4]);
+        return 0;
     }
 
     // Init emulator
-    initEmulator(flag);
+    initEmulator(flags[5]);
 
     // Start emulating the program loaded into the RAM
     emulate();
+
+    // Remove the flags array from the heap
+    free(flags);
 
     return 0;
 }

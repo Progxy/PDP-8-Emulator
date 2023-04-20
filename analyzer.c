@@ -111,3 +111,7 @@ void analyzeInstructions() {
     printf("----------------------------------------------------------------------------\n");
     return;
 }
+
+void dumpInstructions(bool dumpOut) {
+    return;
+}

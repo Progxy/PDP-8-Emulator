@@ -3,6 +3,29 @@
 #include <string.h>
 #include "utils.h"
 
+bool* getFlags(int argc, char** argv) {
+    // Flags: {VALID_ARGC, HELP_FLAG, COMPILE_FLAG, DUMP_FLAG, DUMP_OUT, STEP_FLAG}
+    bool* flags = (bool*) calloc(6, sizeof(bool));
+    flags[0] = argc > 1;
+    flags[1] = argc > 1 && !strcmp(argv[1], "-h");
+    flags[2] = argc > 2 && !strcmp(argv[2], "-c");
+    flags[3] = argc > 2 && !strcmp(argv[2], "-dump");
+    flags[4] = argc > 3;
+    flags[5] = argc > 2 && !strcmp(argv[2], "-step");
+    return flags;
+}
+
+void printHelpInfo() {
+    printf("\npdp8 <filename(.s/.asm/.S/.pdp8)> <flag>");
+    printf("\n\nFLAGS AVAILABLES:");
+    printf("\n\n  -c: compile the given file and analyze the compiled program;");
+    printf("\n\n  -step: compile the given file and step through each instruction;");
+    printf("\n\n  -dump <optional filename>: dump the compiled program inside the specified file name or inside a file with the same name as the given file;");
+    printf("\n\n  -h: show the help info.");
+    printf("\n");
+    return;
+}
+
 bool isAValidFile(char* file) {
     char* fileExt = strchr(file, '.');
     if (fileExt == NULL) {

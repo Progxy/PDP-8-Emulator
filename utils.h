@@ -13,6 +13,15 @@ typedef char byte;
 #define getHexSize(val) (sizeof(val) * 2)
 #define endsWith(str, c) (str[strlen(str) - 1] == c)
 
+/// @brief Search all the flags inside the command.
+/// @param argc 
+/// @param argv 
+/// @return Return all the flags found inside the command.
+bool* getFlags(int argc, char** argv);
+
+/// @brief Print the help info.
+void printHelpInfo();
+
 /// @brief Clean the stdin.
 void cleanStdin();
 
