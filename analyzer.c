@@ -193,15 +193,13 @@ void dumpInstructions(bool dumpOut, char** argv) {
     }
 
     // Write the header line and check for errors
-    if (fputs("\n---------    INSTRUCTION    --- I --- OPR ---   ADDRESS  --- ISA ---------\n", outFile) == EOF) {
+    if (fputs("---------    INSTRUCTION    --- I --- OPR ---   ADDRESS  --- ISA ---------\n", outFile) == EOF) {
         printf("\nFailed while writing to the file.");
         return;
     }
 
-    char* temp;
-
     for (int i = 0; i < 4096; i++) {
-        temp = getInstructionInfo(i);
+        char* temp = getInstructionInfo(i);
         
         // Print the instruction info and check for errors
         if (fputs(temp, outFile) == EOF) {
@@ -241,7 +239,7 @@ void dumpInstructions(bool dumpOut, char** argv) {
     }
     
     // Write the footer line and check for errors
-    if (fputs("\n--------------------------------------------------------------------------\n", outFile) == EOF) {
+    if (fputs("\n\n--------------------------------------------------------------------------", outFile) == EOF) {
         printf("\nFailed while writing to the file.");
         return;
     }
