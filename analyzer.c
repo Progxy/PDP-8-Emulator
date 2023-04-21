@@ -78,47 +78,36 @@ static void printInstructionInfo(word index) {
 /// @param index 
 /// @return Return the string containing the instruction's info.
 static char* getInstructionInfo(int index) {
-    char* instructionInfo = (char*) calloc(4, sizeof(char));
+    char* instructionInfo = (char*) calloc(750, sizeof(char));
     char* temp = NULL;
     int tempLen = 0;
     word instruction = ram[index];
 
-    printf("\nHere: 1");
-
     // Copy the current memory address as an hex value
+    instructionInfo[0] = '\n';
     char* instructionHex = convertToHex(index, 4);
     strcat(instructionInfo, instructionHex);
     free(instructionHex);
-    
-    printf("\nHere: 2");
 
     // Copy the string inside the instruction's info
-    strcat(instructionInfo, ":  ");
+    strcat(instructionInfo, ":   ");
     
-    printf("\nHere: 3");
-
     // Copy the instruction as a binary string
     char* instructionBits = convertToBits(instruction, getBitSize(instruction));
     strcat(instructionInfo, instructionBits);
     free(instructionBits);
-    
-    printf("\nHere: 4");
 
     // Copy the value of the registers and the address 
     temp = (char*) calloc(125, sizeof(char));
-    tempLen = sprintf(temp, "    %d      %d      %d -", getI(instruction), getOPR(instruction), getAddress(instruction));
+    tempLen = sprintf(temp, "    %d      %d      %d - ", getI(instruction), getOPR(instruction), getAddress(instruction));
     temp = (char*) realloc(temp, tempLen + 1);
     strcat(instructionInfo, temp);
     free(temp);
-    
-    printf("\nHere: 5");
 
     // Copy the value of the current address as an hex value
     char* addressHex = convertToHex(getAddress(instruction), 4);
     strcat(instructionInfo, addressHex);
     free(addressHex);
-    
-    printf("\nHere: 6");
 
     // Copy the name of the current instruction
     temp = (char*) calloc(25, sizeof(char));
@@ -126,6 +115,9 @@ static char* getInstructionInfo(int index) {
     temp = (char*) realloc(temp, tempLen + 1);
     strcat(instructionInfo, temp);
     free(temp);
+
+    // Resize the instruction info string    
+    instructionInfo = (char*) realloc(instructionInfo, strlen(instructionInfo) + 1);
     
     return instructionInfo;
 }
@@ -172,8 +164,9 @@ void dumpInstructions(bool dumpOut, char** argv) {
     // Create the output file
     FILE* outFile = NULL;
 
+    // Check if the user has given a name for the output file
     if (dumpOut) {
-        // Check if the given outfile name is valid
+        // Check if the given output file's name is valid
         char* fileExt = strchr(argv[3], '.');
         if ((fileExt == NULL) || strcmp(fileExt, ".txt")) {
             printf("\nError: invalid outfile name, the file must be a text file!");
@@ -181,21 +174,42 @@ void dumpInstructions(bool dumpOut, char** argv) {
         }
 
         printf("\nSaving the data inside '%s'...", argv[3]);
+
+        // Open the file in write mode
         outFile = fopen(argv[3], "w");
     } else {
+        // Get the given assembly file name and add the text file extension
         char* outFileName = getFileName(argv[1]);
+        outFileName = (char*) realloc(outFileName, strlen(outFileName) + 6);
         strcat(outFileName, ".txt");
+        
         printf("\nSaving the data inside '%s'...", outFileName);
+        
+        // Open the file in write mode
         outFile = fopen(outFileName, "w");
+
+        // Remove the output file name from the memory
         free(outFileName);
     }
 
-    // Write the header line
-    fwrite("\n---------    INSTRUCTION    --- I --- OPR ---   ADDRESS    --- ISA ---------\n", 79, 79, outFile);
+    // Write the header line and check for errors
+    if (fputs("\n---------    INSTRUCTION    --- I --- OPR ---   ADDRESS  --- ISA ---------\n", outFile) == EOF) {
+        printf("\nFailed while writing to the file.");
+        return;
+    }
+
+    char* temp;
 
     for (int i = 0; i < 4096; i++) {
-        char* temp = getInstructionInfo(i);
-        fwrite(temp, strlen(temp) + 1, strlen(temp) + 1, outFile);
+        temp = getInstructionInfo(i);
+        
+        // Print the instruction info and check for errors
+        if (fputs(temp, outFile) == EOF) {
+            printf("\nFailed while writing to the file.");
+            return;
+        }
+
+        // Free temp memory
         free(temp);
 
         // Check for empty instructions
@@ -206,19 +220,36 @@ void dumpInstructions(bool dumpOut, char** argv) {
                 i++;
                 emptyInstructionsCounter++;
             }
+            
+            // Decrement the counter to print the first non-null instruction
+            i--;
 
+            // Store the info about how many lines are empty
             temp = (char*) calloc(100, sizeof(char));
-            int tempLen = sprintf(temp, "\n *\n *\n *\n Other %d lines of empty instructions\n *\n *\n *\n", emptyInstructionsCounter);
+            int tempLen = sprintf(temp, "\n*\n*\n*\n\nOther %d lines of empty instructions\n\n*\n*\n*", emptyInstructionsCounter);
             temp = (char*) realloc(temp, (tempLen + 1));
-            fwrite(temp, tempLen + 1, tempLen + 1, outFile);
+
+            // Write the empty lines info on the file and check for errors
+            if (fputs(temp, outFile) == EOF) {
+                printf("\nFailed while writing to the file.");
+                return;
+            }
+
+            // Free temp memory
             free(temp);
         }
     }
     
+    // Write the footer line and check for errors
+    if (fputs("\n--------------------------------------------------------------------------\n", outFile) == EOF) {
+        printf("\nFailed while writing to the file.");
+        return;
+    }
+
     // Close the file
     fclose(outFile);
 
-    printf("\nThe instruction have been saved inside the file!");
+    printf("\nThe instruction have been saved inside the file!\n");
 
     return;
 }

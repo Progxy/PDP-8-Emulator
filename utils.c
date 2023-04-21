@@ -5,6 +5,20 @@
 
 static char hexDictionary[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
+char* formatNumber(int number, int length) {
+    char* result = (char*) calloc(length + 1, sizeof(char));
+
+    // Add a zero if the given number is smaller than the given length
+    for (int i = 0; i <= length; i++) {
+        int remainder = number % (power(10, length - i));
+        int quotient = number / (power(10, length - i));
+        // If the remainder is equal to the given number than add a 0, otherwise write the quotient as an ASCII character (0 = 48 in ASCII,...)
+        result[i] = (remainder == number) ? '0' : (quotient + 48); 
+    }
+
+    return result;
+}
+
 char* getFileName(char* fullFileName) {
     char* fileName = (char*) calloc(1, sizeof(char));
     int fileNameLength = 1;
@@ -68,22 +82,26 @@ void printHex(word value, int size) {
 }
 
 char* convertToBits(word value, int limit) {
-    // Rewrite this function by adding character by character and not using the strcat
-    char* bitsString = (char*) calloc(3, sizeof(char));
+    int whiteSpaces = ((limit + 1) / 8);
+    char* bitsString = (char*) calloc(limit + 2 + whiteSpaces, sizeof(char));
+    int index = 0;
 
     while (limit != -1) {
-        // Store the current bit
-        char* temp = (char*) calloc(3, sizeof(char));
-        int tempLen = sprintf(temp, "%d%s", (char) (value >> limit) & 0b01, (limit % 8) ? "" : " ");
-        temp = (char*) realloc(temp, tempLen + 1);
+        // Store the current bit and update the counter
+        bitsString[index] = ((value >> limit) & 0b01) + 48;
+        index++;
 
-        // Add the current bit to the binary string
-        strcat(bitsString, temp);
+        // Add a whitespace between bytes
+        if (!(limit % 8)) {
+            bitsString[index] = ' ';
+            index++;
+        }
         
-        // Free the temp variable and decrement the counter
-        free(temp);
         limit--;
     }
+
+    // Add the string terminator character
+    bitsString[index] = '\0';
 
     return bitsString;
 } 
@@ -91,7 +109,7 @@ char* convertToBits(word value, int limit) {
 char* convertToHex(word value, int size) {
     // Print the hex identifier
     char* hexString = (char*) calloc(4, sizeof(char));
-    strcat(hexString, " 0x");
+    strcat(hexString, "0x");
     int hexStringLength = strlen(hexString) + 1;
     hexString = (char*) realloc(hexString, hexStringLength + size);
 
