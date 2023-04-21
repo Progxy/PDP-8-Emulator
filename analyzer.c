@@ -99,7 +99,7 @@ static char* getInstructionInfo(int index) {
 
     // Copy the value of the registers and the address 
     temp = (char*) calloc(125, sizeof(char));
-    tempLen = sprintf(temp, "    %d      %d      %d - ", getI(instruction), getOPR(instruction), getAddress(instruction));
+    tempLen = sprintf(temp, "    %d      %d      %s - ", getI(instruction), getOPR(instruction), formatNumber(getAddress(instruction), 4));
     temp = (char*) realloc(temp, tempLen + 1);
     strcat(instructionInfo, temp);
     free(temp);

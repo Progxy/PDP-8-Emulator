@@ -9,11 +9,15 @@ char* formatNumber(int number, int length) {
     char* result = (char*) calloc(length + 1, sizeof(char));
 
     // Add a zero if the given number is smaller than the given length
-    for (int i = 0; i <= length; i++) {
+    for (int i = 1; i <= length; i++) {
         int remainder = number % (power(10, length - i));
         int quotient = number / (power(10, length - i));
+        
         // If the remainder is equal to the given number than add a 0, otherwise write the quotient as an ASCII character (0 = 48 in ASCII,...)
-        result[i] = (remainder == number) ? '0' : (quotient + 48); 
+        result[i - 1] = (remainder == number) ? '0' : (quotient + 48); 
+
+        // Update the number value by subtracting the current quotient
+        number -= quotient * (power(10, length - i));
     }
 
     return result;
@@ -263,15 +267,16 @@ bool compareStrings(char* str1, char* str2) {
 }
 
 int power(int base, int exp) {
+    int result = base;
     if (exp == 0) {
         return 1;
     }
 
     for (int i = exp; i > 1; i--) {
-        base *= base;
+        result *= base;
     }
 
-    return base;
+    return result;
 }
 
 static word charToHex(char c) {

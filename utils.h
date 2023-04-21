@@ -13,6 +13,12 @@ typedef char byte;
 #define getHexSize(val) (sizeof(val) * 2)
 #define endsWith(str, c) (str[strlen(str) - 1] == c)
 
+/// @brief Format the given number into a string of the given length.
+/// @param number 
+/// @param length 
+/// @return Return the formatted string containing the given number.
+char* formatNumber(int number, int length);
+
 /// @brief Convert the given value into a binary string.
 /// @param value 
 /// @param limit 
