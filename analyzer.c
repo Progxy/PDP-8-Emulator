@@ -247,7 +247,7 @@ void dumpInstructions(bool dumpOut, char** argv) {
     // Close the file
     fclose(outFile);
 
-    printf("\nThe instruction have been saved inside the file!\n");
+    printf("\nThe instruction have been saved inside the file!");
 
     return;
 }
