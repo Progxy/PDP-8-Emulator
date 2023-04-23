@@ -17,7 +17,7 @@ This features are currently supported:
 The assembler currently supports this instructions: 
 
 * ### Memory Reference Instructions (MRI)
-    | NAME | I REGISTER | OPR REGISTER | ADDRESS | FUNCTION |
+    | KEYWORD | I REGISTER | OPR REGISTER | ADDRESS | FUNCTION |
     |------|------------|--------------|---------|----------|  
     |AND|0/1|000|12 bits address|And operation between the value at the specified address and the AC
     |ADD|0/1|001|12 bits address|Add operation between the value at the specified address and the AC 
@@ -28,7 +28,7 @@ The assembler currently supports this instructions:
     |ISZ|0/1|110|12 bits address|Increment the value inside the specified address and skip the next instruction if the incremented value is equal to zero
 
 * ### Register Reference Instructions (RRI)
-    | NAME | I REGISTER | OPR REGISTER | ADDRESS |
+    | KEYWORD | I REGISTER | OPR REGISTER | ADDRESS |
     |------|------------|--------------|---------|  
     |CLA|0|111|100000000000|
     |CLE|0|111|010000000000|
@@ -44,7 +44,7 @@ The assembler currently supports this instructions:
     |HLT|0|111|000000000001|
 
 * ### Input/Output Instructions (IOI)
-    | NAME | I REGISTER | OPR REGISTER | ADDRESS |
+    | KEYWORD | I REGISTER | OPR REGISTER | ADDRESS |
     |------|------------|--------------|---------|  
     |INP|1|111|100000000000|
     |OUT|1|111|010000000000|
