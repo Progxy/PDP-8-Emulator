@@ -25,7 +25,7 @@ static word resolveLabel(char* str, int index) {
     char label[4];
     int j = 0;
 
-    for (int i = index + 2; (str[i] != '\0') && (j < 3) && (str[i] != ' '); i++) {
+    for (int i = index + 2; (str[i] != '\0') && (str[i] != '\r') && (j < 3) && (str[i] != ' '); i++) {
         label[j] = str[i];
         j++;
     }

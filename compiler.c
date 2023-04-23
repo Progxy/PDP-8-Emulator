@@ -98,7 +98,7 @@ static bool isInstruction(char* str, int currentLine) {
     }
     
     // Increment the lc also if the string is invalid
-    printf("\nWarning: the instruction at line %d is invalid!", currentLine + 1);
+    printf("\nWarning: the instruction at line %d is empty!", currentLine + 1);
     lc++;
 
     return false;
@@ -213,7 +213,5 @@ static void assembleProgram(char** data) {
 
     return;
 }
-
-//TODO: Implement a linter/code analysis tool
 
 /* END OF DEFINITION */
