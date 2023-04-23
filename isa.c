@@ -482,6 +482,6 @@ void inpInstruction() {
 
 void outInstruction() {
     // Terminal <-- ASCII(AC)
-    printf("%c%c", ac >> 8, ac & (0b11111111));
+    printf("%c%c", ac >> 8 & (0b11111111), ac & (0b11111111));
     return;
 }

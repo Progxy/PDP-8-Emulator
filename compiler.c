@@ -123,7 +123,8 @@ static char** readFile(char* filePath) {
         // Check if is a comment, and if uses all the line or is at the end of an instruction
         if (((tmp == '/') || (tmp == ';') || (tmp == '#')) && (!charIndex)) {
             // Read till the end of the line
-            while (fgetc(file) != '\n');
+            char ch;
+            while ((ch = fgetc(file)) != '\n' && ch != '\r');
             str[charIndex] = '\0';
             data[strIndex] = str;
             strIndex++;
@@ -133,7 +134,8 @@ static char** readFile(char* filePath) {
             continue;
         } else if ((tmp == '/') || (tmp == ';') || (tmp == '#')) {
             // Read till the end of the line
-            while (fgetc(file) != '\n');
+            char ch;
+            while ((ch = fgetc(file)) != '\n' && ch != '\r');
             str[charIndex] = '\0';
             data[strIndex] = str;
             strIndex++;
@@ -144,7 +146,7 @@ static char** readFile(char* filePath) {
         }
 
         // Check if the string is ended
-        if (tmp == '\n') {
+        if (tmp == '\n' || tmp == '\r') {
             str[charIndex] = '\0';
             // Trim the string
             data[strIndex] = trimString(str);
