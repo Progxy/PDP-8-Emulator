@@ -1,9 +1,10 @@
 # Pdp8 Emulator
 
-This is a simple PDP8 Emulator written in C, that compiles and run files written using the PDP8 Assembly Language (.asm/.s/.S/.pdp8).
+This is a simple PDP8 Emulator written in C, that compiles and runs files written in PDP8 Assembly Language (.asm/.s/.S/.pdp8).
 
 ## Features
 This features are currently supported:
+
 * compile the given assembly file and analyze the instructions;
 
 * dump into a text file the instructions to analyze them after;
@@ -32,11 +33,11 @@ The assembler currently supports this instructions:
     |---------|------------|--------------|---------|----------|  
     |CLA|0|111|100000000000|Clear the AC by filling it with zeros|
     |CLE|0|111|010000000000|Clear the E Register by setting it to zero|
-    |CMA|0|111|001000000000|Complement the value stored inside the AC|
-    |CME|0|111|000100000000|Complement the value stored inside the E Register|
+    |CMA|0|111|001000000000|Complement the AC|
+    |CME|0|111|000100000000|Complement the E Register|
     |CIR|0|111|000010000000|Circulate/Shift to the right the bits inside the AC, including the bit inside the E Register as the 17th bit of the AC|
     |CIL|0|111|000001000000|Circulate/Shift to the left the bits inside the AC, including the bit inside the E Register as the 17th bit of the AC|
-    |INC|0|111|000000100000|Increment the value stored inside the AC|
+    |INC|0|111|000000100000|Increment the AC|
     |SPA|0|111|000000010000|Skip the next instruction if the value inside the AC is POSITIVE|
     |SNA|0|111|000000001000|Skip the next instruction if the value inside the AC is NEGATIVE|
     |SZA|0|111|000000000100|Skip the next instruction if the value inside the AC is ZERO|
