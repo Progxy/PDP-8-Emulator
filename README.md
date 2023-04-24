@@ -18,11 +18,11 @@ This features are currently supported:
 
 * compile the given assembly file and analyze the instructions;
 
-* dump into a text file the instructions to analyze them after;
+* dump into a text file the instructions to analyze them after the compilation;
 
 * emulate the assembly file after compiling it;
 
-* step through each step of the execution.
+* step through each step of the execution of the compiled program.
 
 ## Assembler Features
 
