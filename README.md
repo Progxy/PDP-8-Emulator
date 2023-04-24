@@ -29,8 +29,8 @@ This features are currently supported:
 The assembler currently supports this instructions: 
 
 * ### Memory Reference Instructions (MRI)
-    | KEYWORD | I REGISTER | OPR REGISTER | ADDRESS | FUNCTION |
-    |---------|------------|--------------|---------|----------|  
+    | KEYWORD | I REGISTER | OPR REGISTER | ADDRESS | DESCRIPTION |
+    |---------|------------|--------------|---------|-------------|  
     |AND|0/1|000|12 bits address|And operation between the value at the specified address and the AC
     |ADD|0/1|001|12 bits address|Add operation between the value at the specified address and the AC 
     |LDA|0/1|010|12 bits address|Load into the AC the value at the specified address
@@ -40,8 +40,8 @@ The assembler currently supports this instructions:
     |ISZ|0/1|110|12 bits address|Increment the value inside the specified address and skip the next instruction if the incremented value is equal to zero
 
 * ### Register Reference Instructions (RRI)
-    | KEYWORD | I REGISTER | OPR REGISTER | ADDRESS | FUNCTION |
-    |---------|------------|--------------|---------|----------|  
+    | KEYWORD | I REGISTER | OPR REGISTER | ADDRESS | DESCRIPTION |
+    |---------|------------|--------------|---------|-------------|  
     |CLA|0|111|100000000000|Clear the AC by filling it with zeros|
     |CLE|0|111|010000000000|Clear the E Register by setting it to zero|
     |CMA|0|111|001000000000|Complement the AC|
@@ -56,10 +56,10 @@ The assembler currently supports this instructions:
     |HLT|0|111|000000000001|Stop the execution and shutdown the machine, by setting the S Register to 0|
 
 * ### Input/Output Instructions (IOI)
-    | KEYWORD | I REGISTER | OPR REGISTER | ADDRESS | FUNCTION |
-    |---------|------------|--------------|---------|----------| 
-    |INP|1|111|100000000000|
-    |OUT|1|111|010000000000|
+    | KEYWORD | I REGISTER | OPR REGISTER | ADDRESS | DESCRIPTION |
+    |---------|------------|--------------|---------|-------------| 
+    |INP|1|111|100000000000| Read the input in ASCII from the terminal and save it inside the AC|
+    |OUT|1|111|010000000000| Print the value stored inside the AC as two ASCII characters|
 
 ### Notes
 * The I Register data in the MRI instructions is used to determine, whether or not, the Indirect Memory Addressing should be used;
