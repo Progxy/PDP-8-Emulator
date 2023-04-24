@@ -2,6 +2,17 @@
 
 This is a simple PDP8 Emulator written in C, that compiles and runs files written in PDP8 Assembly Language (.asm/.s/.S/.pdp8).
 
+## Compilation
+
+To compile the program is advised to use:
+* gcc (version: >12)
+* makefile
+
+Compile the file using the ```make``` command or the following command:
+```bash
+gcc main.c compiler.c isa.c utils.c emulator.c analyzer.c -std=c11 -Wall -o pdp8
+```
+
 ## Features
 This features are currently supported:
 
