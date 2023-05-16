@@ -1,4 +1,8 @@
 *.exe
 *.s
+*.asm
+*.S
+*.pdp8
+*.txt
 /.vscode
 pdp8
