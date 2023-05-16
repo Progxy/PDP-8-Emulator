@@ -341,7 +341,7 @@ void bsaInstruction() {
     pc = mbr & 0b0111111111111;
 
     // MBR(ADDR) <-- PC
-    mbr = temp;
+    mbr = (mbr & 0b1110000000000000) | temp;
 
     // M <-- MBR
     ram[mar] = mbr;
