@@ -417,7 +417,7 @@ void cilInstruction() {
     e = (ac >> 15) & 0b01;
 
     // AC <-- AC(2 - 16)-E
-    ac = ac << 1 & 0b0111111111111111;
+    ac = (ac << 1) & 0b1111111111111110;
     ac |= temp;
     
     return;
