@@ -42,7 +42,7 @@ bool* getFlags(int argc, char** argv) {
     // Flags: {VALID_ARGC, HELP_FLAG, COMPILE_FLAG, DUMP_FLAG, DUMP_OUT, STEP_FLAG}
     bool* flags = (bool*) calloc(6, sizeof(bool));
     flags[0] = argc > 1;
-    flags[1] = argc > 1 && !strcmp(argv[1], "-h");
+    flags[1] = argc > 2 && !strcmp(argv[2], "-h");
     flags[2] = argc > 2 && !strcmp(argv[2], "-c");
     flags[3] = argc > 2 && !strcmp(argv[2], "-dump");
     flags[4] = argc > 3;
@@ -57,7 +57,7 @@ void printHelpInfo() {
     printf("\n\n  -step: compile the given file and step through each instruction;");
     printf("\n\n  -dump <optional filename>: dump the compiled program inside the specified file name or inside a file with the same name as the given file;");
     printf("\n\n  -h: show the help info.");
-    printf("\n");
+    printf("\n\n");
     return;
 }
 
